@@ -1,28 +1,55 @@
-.App {
-  text-align: center;
+body {
+  margin: 0;
+  padding: 0;
+  background-color: white;
   font-family: 'Arial', sans-serif;
-  margin-top: 50px;
 }
 
-.mood-container {
+.App-header {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  height: 100vh;
+  text-align: center;
+}
+
+.logo {
+  font-size: 8rem;
+  font-weight: bold;
+  letter-spacing: 10px;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 2rem;
+  margin: 0;
+  letter-spacing: 4px;
+}
+
+.description {
   margin-top: 20px;
+  font-size: 1rem;
+  letter-spacing: 1px;
 }
 
-.mood-button {
-  font-size: 30px;
-  margin: 0 10px;
+.arrow-container {
+  position: absolute;
+  bottom: 50px;
+  animation: bounce 2s infinite;
+}
+
+.arrow {
+  font-size: 2rem;
   cursor: pointer;
-  border: none;
-  background: transparent;
-  transition: transform 0.2s;
 }
 
-.mood-button.active {
-  transform: scale(1.5);
-}
-
-.mood-button:hover {
-  transform: scale(1.2);
+/* Floating bounce animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }

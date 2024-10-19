@@ -1,29 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
+import ArrowAnimation from '../ArrowAnimation';
 
 function App() {
-  const [mood, setMood] = useState('😀');
-  const moods = ['😀', '😢', '😡', '😴', '😍'];
-
-  const handleMoodChange = (newMood) => {
-    setMood(newMood);
-  };
-
   return (
     <div className="App">
-      <h1>Select Your Mood</h1>
-      <div className="mood-container">
-        {moods.map((m, index) => (
-          <button
-            key={index}
-            className={`mood-button ${m === mood ? 'active' : ''}`}
-            onClick={() => handleMoodChange(m)}
-          >
-            {m}
-          </button>
-        ))}
-      </div>
-      <p>Your current mood is: {mood}</p>
+      <header className="App-header">
+        <h1 className="logo">FEELIFY</h1>
+        <h2 className="subtitle">PLAYLIST</h2>
+        <p className="description">
+          INSTANTLY MAKE A SPOTIFY PLAYLIST TO SUIT YOUR MOOD AND TASTE
+        </p>
+        <ArrowAnimation />
+      </header>
     </div>
   );
 }
