@@ -79,7 +79,41 @@ def recently_played():
     if response.status_code != 200:
         return f"<pre>Error fetching recently played tracks: {response.status_code}, {response.text}</pre>"
 
-    return response.json()
+    data = response.json()
+    albums_info = []
+
+    for item in data['items']:
+        track = item['track']
+        album = track['album']
+        album_id = album['id']
+        album_type = album['album_type']
+
+        album_response = requests.get(
+            f'https://api.spotify.com/v1/albums/{album_id}',
+            headers={'Authorization': f'Bearer {access_token}'}
+        )
+
+        if album_response.status_code == 200:
+            album_details = album_response.json()
+            genres = album_details.get('genres', [])
+            albums_info.append({
+                'album_id': album_id,
+                'album_type': album_type,
+                'genres': genres,
+                'album_name': album['name'],
+                'release_date': album['release_date']
+            })
+        else:
+            albums_info.append({
+                'album_id': album_id,
+                'album_type': album_type,
+                'genres': [],
+                'album_name': album['name'],
+                'release_date': album['release_date'],
+                'error': 'Unable to fetch album details'
+            })
+
+    return {"albums_info": albums_info}
 
 @app.route('/playlists')
 def playlists():
@@ -116,7 +150,8 @@ def playlist_tracks(playlist_id):
     return response.json()
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=3000)
+    # app.run(host='0.0.0.0', port=3000)
+    app.run(port=3000)
 
 # @app.route('/', methods=['POST'])
 # def generate_recommendations():
