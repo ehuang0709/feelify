@@ -1,7 +1,7 @@
 // Playlist.js
 
 import React, { useEffect, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useEffect, useState, useNavigate } from 'react-router-dom';
 import './Playlist.css';
 
 function Playlist() {
