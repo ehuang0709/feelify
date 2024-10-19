@@ -21,7 +21,7 @@ function Playlist() {
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const response = await fetch('http://the-repo.onrender.com/recommendations', {
+        const response = await fetch('https://the-repo.onrender.com/recommendations', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
