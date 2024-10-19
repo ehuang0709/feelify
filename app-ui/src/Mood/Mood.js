@@ -50,9 +50,9 @@ function Mood() {
   const updateBackground = (xPos, yPos) => {
     const lowerSection = document.querySelector('.lower-section');
     const rect = lowerSection.getBoundingClientRect();
-  
+
     const xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1); 
-    const yNorm = Math.min(Math.max((yPos - rect.top) / rect.height, 0), 1);
+    const yNorm = Math.min(Math.max((yPos - rect.top) / window.innerHeight, 0), 1);
 
     setXNormValue(xNorm);
     setYNormValue(yNorm);
@@ -102,6 +102,7 @@ function Mood() {
     { name: 'Sad', style: { bottom: '5%', left: '50%' } },
     { name: 'Happy', style: { bottom: '50%', left: '5%' } },
   ];
+  console.log("energy " + yNormValue + " valence " + xNormValue);
 
   const handlePlaylistButtonClick = () => {
     navigate('/pre-auth', {
