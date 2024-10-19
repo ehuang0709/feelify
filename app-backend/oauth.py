@@ -8,8 +8,8 @@ import string
 
 app = Flask(__name__)
 
-CLIENT_ID = os.env.SPOTIFY_CLIENT_ID
-CLIENT_SECRET = os.env.SPOTIFY_CLIENT_SECRET
+CLIENT_ID = os.environ['SPOTIFY_CLIENT_ID']
+CLIENT_SECRET = os.environ['SPOTIFY_CLIENT_SECRET']
 REDIRECT_URI = 'http://localhost:3000/callback'
 
 def generate_random_string(length):
@@ -59,4 +59,4 @@ def callback():
     return response.json()
 
 if __name__ == '__main__':
-    app.run(port=8888)
+    app.run(port=3000)
