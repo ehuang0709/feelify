@@ -10,8 +10,18 @@
   background: radial-gradient(circle at center, #3a473f, #21f097cd);
   background-size: 200% 200%;
   animation: gradientAnimation 15s ease infinite;
+  justify-content: flex-start; 
+  padding-top: 120px;
 }
-
+.upper-content {
+  margin-bottom: 5px; /* Add space between upper and lower content */
+}
+.lower-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 40px; /* Add space above the lower content */
+}
 @keyframes gradientAnimation {
   0% {
     background-position: 0% 50%;
@@ -25,20 +35,21 @@
 }
   
   .logo {
-    font-size: 5rem;
-    font-weight: bold;
+    font-size: 10rem;
+    font-weight: 300;
     margin: 0;
   }
   
   .subtitle {
     font-size: 2rem;
     margin: 0;
-    margin-bottom: 20px;
+    margin-bottom: 0;
   }
   
   .spotify-logo img {
     width: 150px;
     margin: 20px 0;
+    padding-left: 215px;
   }
   
   .description {
