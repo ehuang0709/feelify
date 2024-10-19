@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './PreAuthenticationScreen.css';
 
 function PreAuthenticationScreen() {
   const authenticate = () => {
     window.location.href = 'https://the-repo.onrender.com/login';  // Navigate to the external URL
   };
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const response = await fetch('https://the-repo.onrender.com/login', { 
+        credentials: 'include' 
+      });
+      if (response.ok) {
+        // If the user is authenticated, navigate to the playlist component
+        navigate('/playlist');
+      }
+    };
+
+    checkAuth();
+  }, [navigate]);
 
   return (
     <div className="pre-auth-container">
