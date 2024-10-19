@@ -13,7 +13,8 @@ CORS(app)
 
 CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
 CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
-REDIRECT_URI = 'http://localhost:3000/callback'
+# REDIRECT_URI = 'http://localhost:3000/callback'
+REDIRECT_URI = 'https://the-repo.onrender.com/callback'
 
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
