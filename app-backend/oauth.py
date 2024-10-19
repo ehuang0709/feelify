@@ -1,51 +1,62 @@
-import json
+from flask import Flask, request, redirect
 import requests
+import urllib.parse
+import base64
+import os
+import random
+import string
 
-class SpotifyHandler:
-    API_VERSION = "v1"
-    SPOTIFY_API_BASE_URL = "https://api.spotify.com"
-    SPOTIFY_API_URL = f"{SPOTIFY_API_BASE_URL}/{API_VERSION}"
+app = Flask(__name__)
 
-    def get_user_profile_data(self, auth_header):
-        user_profile_api_endpoint = f"{self.SPOTIFY_API_URL}/me"
-        profile_data = requests.get(user_profile_api_endpoint, headers=auth_header).text
-        return json.loads(profile_data)
+CLIENT_ID = os.env.SPOTIFY_CLIENT_ID
+CLIENT_SECRET = os.env.SPOTIFY_CLIENT_SECRET
+REDIRECT_URI = 'http://localhost:8888/callback'
 
-    def get_user_playlist_data(self, auth_header, user_id):
-        """
-        :return: list of dictionaries with playlist information
-        """
-        playlist_api_endpoint = f"https://api.spotify.com/v1/users/{user_id}/playlists"
-        playlists = json.loads(requests.get(playlist_api_endpoint, headers=auth_header).text)
-        playlists = playlists['items']
+def generate_random_string(length):
+    letters = string.ascii_letters + string.digits
+    return ''.join(random.choice(letters) for i in range(length))
 
-        playlist_data = []
+@app.route('/login')
+def login():
+    state = generate_random_string(16)
+    scope = 'user-read-private user-read-email'
+    
+    query_params = {
+        'response_type': 'code',
+        'client_id': CLIENT_ID,
+        'scope': scope,
+        'redirect_uri': REDIRECT_URI,
+        'state': state
+    }
+    auth_url = 'https://accounts.spotify.com/authorize?' + urllib.parse.urlencode(query_params)
+    return redirect(auth_url)
 
-        for playlist in playlists:
-            playlist_data.append({
-                'playlist_name': playlist['name'],
-                'playlist_url': playlist['external_urls']['spotify'],
-                'playlist_img_url': playlist['images'][0]['url'],
-                'playlist_tracks_url': playlist['tracks']['href'],
-                'playlist_id': playlist['id'],
-                'playlist_tracks': self._get_playlist_tracks(auth_header, playlist['id'])
-            })
-        return playlist_data
+@app.route('/callback')
+def callback():
+    code = request.args.get('code')
+    state = request.args.get('state')
 
-    @staticmethod
-    def _get_playlist_tracks(auth_header, playlist_id):
-        """
-        :return: list of dictionaries with track information
-        """
-        playlist_api_endpoint = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
-        tracks = json.loads(requests.get(playlist_api_endpoint, headers=auth_header).text)['items']
+    if not state:
+        return redirect('/?' + urllib.parse.urlencode({'error': 'state_mismatch'}))
 
-        return [
-            {
-                'track_artist': track['track']['artists'][0]['name'],
-                'track_name': track['track']['name'],
-                'track_image': track['track']['album']['images'][0]['url'],
-                'track_url': track['track']['external_urls']['spotify'],
-                'track_id': track['track']['id']
-            } for track in tracks
-        ]
+    auth_str = f"{CLIENT_ID}:{CLIENT_SECRET}"
+    b64_auth_str = base64.b64encode(auth_str.encode()).decode()
+
+    auth_options = {
+        'url': 'https://accounts.spotify.com/api/token',
+        'data': {
+            'code': code,
+            'redirect_uri': REDIRECT_URI,
+            'grant_type': 'authorization_code'
+        },
+        'headers': {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': f'Basic {b64_auth_str}'
+        }
+    }
+    
+    response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
+    return response.json()
+
+if __name__ == '__main__':
+    app.run(port=8888)
