@@ -14,7 +14,7 @@ function PreAuthenticationScreen() {
         <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Spotify_logo_with_text.svg" alt="Spotify Logo" />
       </div>
       <p className="description">
-        CONNECT YOUR SPOTIFY ACCOUNT SO FREELIFY PLAYLIST CAN DISCOVER YOUR MUSIC TASTE.
+        CONNECT YOUR SPOTIFY ACCOUNT SO MOOD PLAYLIST CAN DISCOVER YOUR MUSIC TASTE.
       </p>
       <p className="policy">
         By connecting you confirm that you have read and understood the <a href="https://www.spotify.com/us/legal/privacy-policy/">Privacy & Cookie Policy </a>  
