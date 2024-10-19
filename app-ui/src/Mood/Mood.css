@@ -1,0 +1,19 @@
+.mood-container {
+    height: 100vh;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .mood-container h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  
+  .mood-container p {
+    font-size: 1.2rem;
+  }
+  

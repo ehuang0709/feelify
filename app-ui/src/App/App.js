@@ -2,18 +2,18 @@
 import React, { useRef, useState } from 'react';
 import './App.css';
 import ArrowAnimation from '../ArrowAnimation';
-import Home from '../Home/Home';
+import Mood from '../Mood/Mood';
 
 function App() {
-  const [showHome, setShowHome] = useState(false);
-  const homeRef = useRef(null);
+  const [showMood, setShowMood] = useState(false);
+  const moodRef = useRef(null);
 
   const handleArrowClick = () => {
-    setShowHome(true);
+    setShowMood(true);
     setTimeout(() => {
-      if (homeRef.current) {
+      if (moodRef.current) {
         window.scrollTo({
-          top: homeRef.current.offsetTop,
+          top: moodRef.current.offsetTop,
           behavior: 'smooth',
         });
       }
@@ -30,9 +30,9 @@ function App() {
         </p>
         <ArrowAnimation handleClick={handleArrowClick} />
       </header>
-      {showHome && (
-        <div ref={homeRef}>
-          <Home />
+      {showMood && (
+        <div ref={moodRef}>
+          <Mood />
         </div>
       )}
     </div>
