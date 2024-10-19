@@ -9,7 +9,7 @@ import string
 
 app = Flask(__name__)
 app.secret_key = '51e718937f025e5ea3af64b1c45ad9aa943a622ef85fd6afd75d72b7225e7b06'
-CORS(app, origins=["https://feelify.netlify.app", "https://the-repo.onrender.com"], supports_credentials=True)
+CORS(app, origins=["https://feelify.netlify.app", "https://the-repo.onrender.com", "https://accounts.spotify.com/"], supports_credentials=True)
 
 CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
 CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
@@ -20,7 +20,7 @@ REDIRECT_URI = 'https://feelify.netlify.app/playlist'
 @app.after_request
 def add_cors_headers(response):
     origin = request.headers.get('Origin')
-    if origin in ["https://feelify.netlify.app", "https://the-repo.onrender.com"]:
+    if origin in ["https://feelify.netlify.app", "https://the-repo.onrender.com", "https://accounts.spotify.com/"]:
         response.headers['Access-Control-Allow-Origin'] = origin
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
     response.headers['Access-Control-Allow-Methods'] = 'GET,POST'
