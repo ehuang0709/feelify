@@ -46,7 +46,7 @@ function Mood() {
     const lowerSection = document.querySelector('.lower-section');
     const rect = lowerSection.getBoundingClientRect();
   
-    const xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1); console.log("x norm ", xNorm);
+    const xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1); 
     const yNorm = Math.min(Math.max((yPos - rect.top) / rect.height, 0), 1);
   
     const topLeft = { r: 191, g: 255, b: 127 };     // Pastel Yellow-Green
@@ -149,6 +149,8 @@ function Mood() {
         <PlaylistButton
           showButton={showPlaylistButton}
           onClick={handlePlaylistButtonClick}
+          valence={xNorm}
+          energy={yNorm}
         />
       </div>
     </div>
