@@ -4,7 +4,7 @@ import Mood from "../Mood/Mood.js"
 import PreAuthenticationScreen from '../PreAuthenticationScreen/PreAuthenticationScreen.js';
 import Home from '../Home/Home.js';
 import { AnimatePresence } from 'framer-motion';
-import Playlist from "../Playlist/Playlist.js"
+import Playlist from '../Playlist/Playlist.js';
 
 function App() {
   return (
