@@ -58,5 +58,5 @@ def callback():
     response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
     return response.json()
 
-if __name__ == '__main__':
-    app.run(port=3000)
+# if __name__ == '__main__':
+#     app.run(port=3000)
