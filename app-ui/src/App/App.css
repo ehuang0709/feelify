@@ -36,15 +36,41 @@ body {
 .arrow-container {
   position: absolute;
   bottom: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   animation: bounce 2s infinite;
 }
 
-.arrow {
-  font-size: 2rem;
-  cursor: pointer;
+.circle {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 3px solid black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: border-color 0.3s ease-in-out;
+  box-sizing: border-box;
 }
 
-/* Floating bounce animation */
+.circle:hover {
+  border-color: transparent; 
+}
+
+.arrow {
+  width: 0;
+  height: 0;
+  border-top: 30px solid transparent;
+  border-bottom: 30px solid transparent;
+  border-left: 50px solid black;
+  transition: transform 0.2s;
+}
+
+.circle:hover .arrow {
+  transform: scale(1.5) rotate(90deg);
+}
+
 @keyframes bounce {
   0%, 100% {
     transform: translateY(0);
