@@ -6,10 +6,8 @@ import './Playlist.css';
 import { useNavigate } from 'react-router-dom';
 
 function Playlist() {
-<<<<<<< HEAD
   const location = useLocation();
   const { energy, valence } = location.state || { energy: 0, valence: 0 };
-=======
   const navigate = useNavigate();
 
   const handleMakeAnotherClick = () => {
@@ -19,7 +17,6 @@ function Playlist() {
   const handleOpenSpotifyClick = () => {
     window.open('https://open.spotify.com/playlist/YOUR_PLAYLIST_ID', '_blank');
   };
->>>>>>> 9f6695a (add 2 buttons to playlist page)
 
   return (
     <div className="playlist-container">
