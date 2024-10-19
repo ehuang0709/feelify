@@ -9,8 +9,6 @@ function PreAuthenticationScreen() {
     window.location.href = 'https://the-repo.onrender.com/login';  // Navigate to the external URL
   };
   const { energy, valence } = location.state || { energy: 0, valence: 0 };
-  console.log('Received energy:', energy);
-  console.log('Received valence:', valence);
 
   const navigate = useNavigate();
 
