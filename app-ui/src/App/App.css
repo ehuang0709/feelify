@@ -1,0 +1,28 @@
+.App {
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  margin-top: 50px;
+}
+
+.mood-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.mood-button {
+  font-size: 30px;
+  margin: 0 10px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  transition: transform 0.2s;
+}
+
+.mood-button.active {
+  transform: scale(1.5);
+}
+
+.mood-button:hover {
+  transform: scale(1.2);
+}
