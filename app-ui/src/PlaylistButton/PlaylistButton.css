@@ -1,0 +1,37 @@
+.button-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  
+  .show-button {
+    opacity: 1;
+  }
+  
+  .generate-playlist-button {
+    padding: 10px 30px;
+    font-family: 'Arial', sans-serif;
+    font-weight: bold;
+    font-size: 1rem;
+    background-color: white;
+    color: #000;
+    border: none;
+    border-radius: 40px;
+    cursor: pointer;
+    transition: transform 0.3s, background-color 0.3s;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .generate-playlist-button:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.9);
+  }
+  
+  
