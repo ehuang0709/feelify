@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Start the Flask app
-CMD ["python", "oauth.py"]
+CMD ["python", "server.py"]
