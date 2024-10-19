@@ -121,6 +121,7 @@ function Mood() {
             const xPos = info.point.x;
             const yPos = info.point.y;
             updateBackground(xPos, yPos);
+            setShowPlaylistButton(true)
           }}
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.8 }}
