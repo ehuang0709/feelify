@@ -1,3 +1,16 @@
+@font-face {
+  font-family: 'Mortend-Bold';
+  src: url('Mortend\ Bold.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Super-Water';
+  src: url('Super Water.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .mood-container {
   position: relative;
   overflow: hidden;
@@ -7,16 +20,31 @@
 
 .text-container {
   text-align: center;
-  padding-top: 50px;
+  padding-top: 150px;
+  font-family: 'Mortend-Bold', Arial, sans-serif;
+  font-weight: 200
+}
+.text-container h1 {
+  font-size: 4rem;
+  font-weight: 10;
+  font-family: 'Super-Water', Arial, sans-serif;
+  margin-bottom: 0.5rem;
+}
+.text-container h3 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-family:  Arial, sans-serif;
 }
 
 .mood-label {
   position: absolute;
   font-size: 24px;
   font-weight: bold;
-  color: white;
-  text-shadow: 1px 1px 2px black;
+  color: black;
+  
   user-select: none;
+  font-family: 'Mortend-Bold'
 }
 
 .draggable-arrow {

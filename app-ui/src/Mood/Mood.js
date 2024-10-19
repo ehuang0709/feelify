@@ -90,28 +90,28 @@ function Mood() {
   // Define mood labels and positions
   const moodLabels = [
     {
-      name: 'Relaxed',
-      style: { top: '10%', left: '10%' }, // Upper Left
+      name: 'Happy',
+      style: { top: '5%', left: '5%' }, // Upper Left
     },
     {
-      name: 'Excited',
-      style: { top: '10%', right: '10%' }, // Upper Right
+      name: 'Hype',
+      style: { top: '5%', right: '5%' }, // Upper Right
     },
     {
-      name: 'Calm',
-      style: { bottom: '10%', left: '10%' }, // Lower Left
+      name: 'Chill',
+      style: { bottom: '5%', left: '5%' }, // Lower Left
     },
     {
-      name: 'Energetic',
-      style: { bottom: '10%', right: '10%' }, // Lower Right
+      name: 'Sad',
+      style: { bottom: '5%', right: '5%' }, // Lower Right
     },
   ];
 
   return (
     <div className="mood-container">
       <div className="text-container">
-        <h1>How are you feeling today?</h1>
-        <h3>Drag the play arrow icon to where you resonate!</h3>
+        <h1>HOW ARE YOU FEELING TODAY? </h1>
+        <h3>DRAG THE PLAY ICON TO WHERE YOU RESONATE</h3>
       </div>
 
       {/* Render Mood Labels */}
