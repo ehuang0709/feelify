@@ -201,13 +201,29 @@ def generate_recommendations():
     access_token = session.get('access_token')
     if not access_token:
         return redirect('/login')
-
+    
     data = request.json
 
-    seed_artists = data.get('seed_artists', [])
+    # seed_artists = data.get('seed_artists', [])
     target_energy = data.get('target_energy')
     target_valence = data.get('target_valence')
     limit = 20
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    top_items_response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers, params={
+        'time_range': 'medium_term',
+        'limit': 5
+    })
+
+    if top_items_response.status_code != 200:
+        return f"<pre>Error fetching top artists: {top_items_response.status_code}, {top_items_response.text}</pre>"
+
+    top_items_data = top_items_response.json()
+
+    seed_artists = [artist['id'] for artist in top_items_data['items']]
 
     params = {
         'seed_artists': ','.join(seed_artists),
@@ -216,9 +232,6 @@ def generate_recommendations():
         'target_valence': target_valence
     }
 
-    headers = {
-        'Authorization': f'Bearer {access_token}'
-    }
     response = requests.get('https://api.spotify.com/v1/recommendations', headers=headers, params=params)
 
     if response.status_code != 200:
