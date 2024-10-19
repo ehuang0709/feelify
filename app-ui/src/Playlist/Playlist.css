@@ -1,0 +1,38 @@
+/* Playlist.css */
+
+.playlist-container {
+    width: 80%;
+    margin: 0 auto;
+    text-align: center;
+  }
+  
+  .embedded-playlist {
+    margin: 20px 0;
+  }
+  
+  .boxes-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .box {
+    margin: 10px;
+    text-align: center;
+    width: 150px;
+  }
+  
+  .box-image {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    border-radius: 8px;
+  }
+  
+  .box-title {
+    margin-top: 10px;
+    font-size: 1em;
+    color: #333;
+  }
+  
