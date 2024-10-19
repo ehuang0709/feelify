@@ -3,10 +3,23 @@
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import './Playlist.css';
+import { useNavigate } from 'react-router-dom';
 
 function Playlist() {
+<<<<<<< HEAD
   const location = useLocation();
   const { energy, valence } = location.state || { energy: 0, valence: 0 };
+=======
+  const navigate = useNavigate();
+
+  const handleMakeAnotherClick = () => {
+    navigate('/mood'); // Adjust the route to your mood selection screen
+  };
+
+  const handleOpenSpotifyClick = () => {
+    window.open('https://open.spotify.com/playlist/YOUR_PLAYLIST_ID', '_blank');
+  };
+>>>>>>> 9f6695a (add 2 buttons to playlist page)
 
   return (
     <div className="playlist-container">
@@ -25,7 +38,8 @@ function Playlist() {
         ></iframe>
       </div>
 
-      {/* Boxes of Images and Test Titles */}
+      <h2 className="featured-artists-title">Featured Artists in This Playlist</h2>
+
       <div className="boxes-container">
         <div className="box">
           <img src="https://via.placeholder.com/150" alt="Test Image 1" className="box-image" />
@@ -40,6 +54,21 @@ function Playlist() {
           <h3 className="box-title">Test Title 3</h3>
         </div>
         {/* Add more boxes as needed */}
+      </div>
+
+      {/* Buttons Section */}
+      <div className="buttons-container">
+        <button className="make-another-button" onClick={handleMakeAnotherClick}>
+          Make Another
+        </button>
+        <button className="open-spotify-button" onClick={handleOpenSpotifyClick}>
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg"
+            alt="Spotify Logo"
+            className="spotify-logo"
+          />
+          Open Spotify
+        </button>
       </div>
     </div>
   );
