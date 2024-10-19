@@ -9,12 +9,11 @@ import string
 
 app = Flask(__name__)
 app.secret_key = '51e718937f025e5ea3af64b1c45ad9aa943a622ef85fd6afd75d72b7225e7b06'
-CORS(app, resources={r"/*": {"origins": "https://feelify.netlify.app"}})
+CORS(app)
 
 CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
 CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
-# REDIRECT_URI = 'http://localhost:3000/callback'
-REDIRECT_URI = 'https://the-repo.onrender.com/callback'
+REDIRECT_URI = 'http://localhost:3000/callback'
 
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
@@ -153,11 +152,47 @@ def playlist_tracks(playlist_id):
 
     return response.json()
 
+@app.route('/user-top-items')
+def user_top_items():
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    item_type = request.args.get('type', 'artists')
+    time_range = request.args.get('time_range', 'medium_term')
+    limit = request.args.get('limit', 5)
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get(f'https://api.spotify.com/v1/me/top/{item_type}', headers=headers, params={
+        'time_range': time_range,
+        'limit': limit
+    })
+
+    if response.status_code != 200:
+        return f"<pre>Error fetching top {item_type}: {response.status_code}, {response.text}</pre>"
+
+    data = response.json()
+    items_info = []
+
+    for artist in data['items']:
+        items_info.append({
+            'artist_name': artist['name'],
+            'genres': artist.get('genres', []),
+            'followers': artist['followers']['total'],
+            'popularity': artist['popularity'],
+            'image_url': artist.get('images', [{}])[0].get('url', '')
+        })
+
+    return {"top_items": items_info} 
+
+
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=3000)
     app.run(port=3000)
 
-# @app.route('/', methods=['POST'])
-# def generate_recommendations():
-#     data = request.json
-#     print(data)
+@app.route('/', methods=['POST'])
+def generate_recommendations():
+    data = request.json
+    print(data)
