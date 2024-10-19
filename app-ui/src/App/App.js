@@ -20,8 +20,10 @@ function App() {
     }, 100);
   };
 
+  //TODO: fix scroll animation
   return (
     <div className="App">
+      {!showMood && ( 
       <header className="App-header">
         <h1 className="logo">FEELIFY</h1>
         <h2 className="subtitle">YOUR EMOTIONS, YOUR PLAYLIST</h2>
@@ -30,6 +32,7 @@ function App() {
         </p>
         <ArrowAnimation handleClick={handleArrowClick} />
       </header>
+      )}
       {showMood && (
         <div ref={moodRef}>
           <Mood />
