@@ -26,7 +26,6 @@ function Playlist() {
           headers: {
             'Content-Type': 'application/json',
           },
-          mode: 'no-cors',
           body: JSON.stringify({
             target_energy: energy,
             target_valence: valence,
