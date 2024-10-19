@@ -196,18 +196,18 @@ def user_top_items():
     return {"top_items": items_info} 
 
 # GENERATE SONG RECOMMENDATIONS
-@app.route('/recommendations', methods=['GET'])
+@app.route('/recommendations', methods=['POST'])
 def generate_recommendations():
-    # hard coded seed artists for testing
-    seed_artists = ["0BezPR1Hn38i8qShQKunSD", "3Nrfpe0tUJi4K4DXYWgMUX", "2elBjNSdBE2Y3f0j1mjrql"]
-
-    target_energy = 0.7
-    target_valence = 0.6
-    limit = 20
-
     access_token = session.get('access_token')
     if not access_token:
         return redirect('/login')
+
+    data = request.json
+
+    seed_artists = data.get('seed_artists', [])
+    target_energy = data.get('target_energy')
+    target_valence = data.get('target_valence')
+    limit = 20
 
     params = {
         'seed_artists': ','.join(seed_artists),
