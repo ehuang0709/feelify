@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import './Mood.css';
 import PlaylistButton from '../PlaylistButton/PlaylistButton';
 
 function Mood() {
+  const navigate = useNavigate();
   const [windowSize, setWindowSize] = useState({
     width: window.innerWidth,
     height: window.innerHeight,
@@ -90,7 +92,9 @@ function Mood() {
     { name: 'Chill', style: { bottom: '5%', left: '5%' } }, // Lower Left
     { name: 'Sad', style: { bottom: '5%', right: '5%' } }, // Lower Right
   ];
-
+  const handlePlaylistButtonClick = () => {
+    navigate('/pre-auth');
+  };
   return (
     <div className="mood-container">
       <div className="text-container">
@@ -141,12 +145,12 @@ function Mood() {
         </label>
       </div>
 
-<div className={`button-container ${showPlaylistButton ? 'show-button' : ''}`}>
-  <PlaylistButton
-    showButton={showPlaylistButton}
-    onClick={() => alert('Generating playlist...')}
-  />
-</div>
+      <div className={`button-container ${showPlaylistButton ? 'show-button' : ''}`}>
+        <PlaylistButton
+          showButton={showPlaylistButton}
+          onClick={handlePlaylistButtonClick}
+        />
+      </div>
     </div>
   );
 }
