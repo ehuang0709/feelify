@@ -1,14 +1,14 @@
 // Playlist.js
 
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useEffect, useState, useNavigate } from 'react-router-dom';
 import './Playlist.css';
-import { useNavigate } from 'react-router-dom';
 
 function Playlist() {
   const location = useLocation();
-  const { energy, valence } = location.state || { energy: 0, valence: 0 };
   const navigate = useNavigate();
+  const { energy, valence } = location.state || { energy: 0, valence: 0 };
+  const [recommendations, setRecommendations] = useState([]);
 
   const handleMakeAnotherClick = () => {
     navigate('/mood'); // Adjust the route to your mood selection screen
@@ -17,6 +17,36 @@ function Playlist() {
   const handleOpenSpotifyClick = () => {
     window.open('https://open.spotify.com/playlist/YOUR_PLAYLIST_ID', '_blank');
   };
+
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      try {
+        const response = await fetch('http://localhost:3000/recommendations', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            target_energy: energy,
+            target_valence: valence,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch recommendations');
+        }
+
+        const data = await response.json();
+        setRecommendations(data.tracks || []);
+
+        console.log("Recommendations:", data.tracks || []);
+      } catch (error) {
+        console.error('Error fetching recommendations:', error);
+      }
+    };
+
+    fetchRecommendations();
+  }, [energy, valence]);
 
   return (
     <div className="playlist-container">
