@@ -1,5 +1,5 @@
-from flask import Flask, request, redirect, send_file
-# from flask_cors import CORS
+from flask import Flask, request, redirect, send_file, session
+from flask_cors import CORS
 import requests
 import urllib.parse
 import base64
@@ -8,7 +8,8 @@ import random
 import string
 
 app = Flask(__name__)
-# CORS(app)
+app.secret_key = '51e718937f025e5ea3af64b1c45ad9aa943a622ef85fd6afd75d72b7225e7b06'
+CORS(app)
 
 CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
 CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
@@ -17,10 +18,6 @@ REDIRECT_URI = 'http://localhost:3000/callback'
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     return ''.join(random.choice(letters) for i in range(length))
-
-@app.route('/')
-def home():
-    return "Hello, World!"
 
 @app.route('/login')
 def login():
@@ -62,12 +59,68 @@ def callback():
     }
     
     response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
+    token_data = response.json()
+    session['access_token'] = token_data.get('access_token')
+
+    return token_data
+
+@app.route('/recently-played')
+def recently_played():
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get('https://api.spotify.com/v1/me/player/recently-played', headers=headers)
+    
+    if response.status_code != 200:
+        return f"<pre>Error fetching recently played tracks: {response.status_code}, {response.text}</pre>"
+
     return response.json()
+
+@app.route('/playlists')
+def playlists():
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get('https://api.spotify.com/v1/me/playlists', headers=headers)
+
+    if response.status_code != 200:
+        return f"<pre>Error fetching playlists: {response.status_code}, {response.text}</pre>"
+
+    return response.json()
+
+@app.route('/playlists/<playlist_id>')
+def playlist_tracks(playlist_id):
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get(f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks', headers=headers)
+
+    if response.status_code != 200:
+        return f"<pre>Error fetching tracks for playlist {playlist_id}: {response.status_code}, {response.text}</pre>"
+
+    return response.json()
+
+
+
+if __name__ == '__main__':
+    app.run(port=3000)
 
 # @app.route('/', methods=['POST'])
 # def generate_recommendations():
 #     data = request.json
 #     print(data)
-
-if __name__ == '__main__':
-    app.run(port=3000)
