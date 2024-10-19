@@ -6,6 +6,69 @@
   justify-content: center;
   background-color: #f0f0f0;
   text-align: center;
+  position: relative;
+}
+
+.text-container {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 0.5rem;
+}
+
+h3 {
+  margin-top: 10;
+}
+
+.mood-area {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+}
+
+.mood-label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 10px 20px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.mood-label:hover {
+  transform: scale(1.1);
+}
+
+.top {
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.left {
+  left: 2%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.right {
+  right: 2%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.bottom {
+  bottom: 2%;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .draggable-arrow {
@@ -25,4 +88,21 @@
   border-bottom: 25px solid transparent;
   border-left: 45px solid black;
   transition: transform 0.2s;
+}
+
+/* Gradient backgrounds on hover */
+.top .mood-label:hover {
+  background: linear-gradient(to bottom, #ffeb3b, #ffc107);
+}
+
+.left .mood-label:hover {
+  background: linear-gradient(to right, #4caf50, #8bc34a);
+}
+
+.right .mood-label:hover {
+  background: linear-gradient(to left, #f44336, #e91e63);
+}
+
+.bottom .mood-label:hover {
+  background: linear-gradient(to top, #2196f3, #03a9f4);
 }
