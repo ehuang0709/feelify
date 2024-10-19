@@ -1,7 +1,18 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './PreAuthenticationScreen.css';
 
 function PreAuthenticationScreen() {
+  // const navigate = useNavigate();
+
+  // const authenticate = () => {
+  //   navigate('localhost:5000/login'); 
+  // };
+
+  const authenticate = () => {
+    window.location.href = 'http://localhost:5000/login';  // Navigate to the external URL
+  };
+
   return (
     <div className="pre-auth-container">
       <h1 className="logo">MOOD</h1>
@@ -16,7 +27,7 @@ function PreAuthenticationScreen() {
         By connecting you confirm that you have read and understood the <a href="#">Privacy & Cookie Policy</a> 
         and agree to the processing of your data and the use of cookies in accordance with it.
       </p>
-      <button className="connect-button">
+      <button className="connect-button" onClick={authenticate}>
         <img src="https://upload.wikimedia.org/wikipedia/commons/8/84/Spotify_icon.svg" alt="Spotify Icon" />
         CONNECT WITH SPOTIFY
       </button>
