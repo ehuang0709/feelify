@@ -1,16 +1,73 @@
-from flask import Flask, request, send_file
-from flask_cors import CORS
+from flask import Flask, request, redirect, send_file
+# from flask_cors import CORS
+import requests
+import urllib.parse
+import base64
+import os
+import random
+import string
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
-# @app.route('/', methods=['GET'])
-# def send():
-#     print('send')
-#     # extracted_name = 'test.jpeg'
-#     # return send_file(extracted_name, mimetype="image/jpeg")
+CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
+CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
+REDIRECT_URI = 'http://localhost:3000/callback'
 
-@app.route('/', methods=['POST'])
-def generate_recommendations():
-    data = request.json
-    print(data)
+def generate_random_string(length):
+    letters = string.ascii_letters + string.digits
+    return ''.join(random.choice(letters) for i in range(length))
+
+@app.route('/')
+def home():
+    return "Hello, World!"
+
+@app.route('/login')
+def login():
+    state = generate_random_string(16)
+    scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-public user-follow-read user-top-read user-read-recently-played user-library-read'
+    
+    query_params = {
+        'response_type': 'code',
+        'client_id': CLIENT_ID,
+        'scope': scope,
+        'redirect_uri': REDIRECT_URI,
+        'state': state
+    }
+    auth_url = 'https://accounts.spotify.com/authorize?' + urllib.parse.urlencode(query_params)
+    return redirect(auth_url)
+
+@app.route('/callback')
+def callback():
+    code = request.args.get('code')
+    state = request.args.get('state')
+
+    if not state:
+        return redirect('/?' + urllib.parse.urlencode({'error': 'state_mismatch'}))
+
+    auth_str = f"{CLIENT_ID}:{CLIENT_SECRET}"
+    b64_auth_str = base64.b64encode(auth_str.encode()).decode()
+
+    auth_options = {
+        'url': 'https://accounts.spotify.com/api/token',
+        'data': {
+            'code': code,
+            'redirect_uri': REDIRECT_URI,
+            'grant_type': 'authorization_code'
+        },
+        'headers': {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Authorization': f'Basic {b64_auth_str}'
+        }
+    }
+    
+    response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
+    return response.json()
+
+# @app.route('/', methods=['POST'])
+# def generate_recommendations():
+#     data = request.json
+#     print(data)
+
+if __name__ == '__main__':
+    app.run(port=3000)

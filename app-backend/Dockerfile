@@ -2,7 +2,7 @@
 FROM python:3.8-slim
 
 # Set the working directory
-WORKDIR /app
+WORKDIR /app-backend
 
 # Copy the requirements file into the container
 COPY requirements.txt .
@@ -16,5 +16,5 @@ COPY . .
 # Expose the port that your Flask app listens on
 EXPOSE 3000
 
-# Start the Flask app
-CMD ["python", "oauth.py"]
+# Start the Flask app with Gunicorn
+CMD ["gunicorn", "-b", "0.0.0.0:3000", "server:app"]
