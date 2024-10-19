@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, send_file
-from flask_cors import CORS
+# from flask_cors import CORS
 import requests
 import urllib.parse
 import base64
@@ -8,15 +8,19 @@ import random
 import string
 
 app = Flask(__name__)
-CORS(app)
+# CORS(app)
 
-CLIENT_ID = os.environ['SPOTIFY_CLIENT_ID']
-CLIENT_SECRET = os.environ['SPOTIFY_CLIENT_SECRET']
+CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
+CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
 REDIRECT_URI = 'http://localhost:3000/callback'
 
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     return ''.join(random.choice(letters) for i in range(length))
+
+@app.route('/')
+def home():
+    return "Hello, World!"
 
 @app.route('/login')
 def login():
@@ -60,10 +64,10 @@ def callback():
     response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
     return response.json()
 
-# if __name__ == '__main__':
-#     app.run(port=3000)
+# @app.route('/', methods=['POST'])
+# def generate_recommendations():
+#     data = request.json
+#     print(data)
 
-@app.route('/', methods=['POST'])
-def generate_recommendations():
-    data = request.json
-    print(data)
+if __name__ == '__main__':
+    app.run(port=3000)
