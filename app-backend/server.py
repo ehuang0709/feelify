@@ -17,12 +17,12 @@ CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
 # REDIRECT_URI = 'https://the-repo.onrender.com/callback'
 REDIRECT_URI = 'https://feelify.netlify.app/playlist'
 
-@app.after_request
-def add_cors_headers(response):
-    response.headers['Access-Control-Allow-Origin'] = 'https://feelify.netlify.app'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
-    response.headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,DELETE,OPTIONS'
-    return response
+# @app.after_request
+# def add_cors_headers(response):
+#     response.headers['Access-Control-Allow-Origin'] = 'https://feelify.netlify.app'
+#     response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+#     response.headers['Access-Control-Allow-Methods'] = 'GET,POST,PUT,DELETE,OPTIONS'
+#     return response
 
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
