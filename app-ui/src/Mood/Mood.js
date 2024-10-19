@@ -46,7 +46,7 @@ function Mood() {
     const lowerSection = document.querySelector('.lower-section');
     const rect = lowerSection.getBoundingClientRect();
   
-    const xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1);
+    const xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1); console.log("x norm ", xNorm);
     const yNorm = Math.min(Math.max((yPos - rect.top) / rect.height, 0), 1);
   
     const topLeft = { r: 191, g: 255, b: 127 };     // Pastel Yellow-Green
@@ -87,10 +87,10 @@ function Mood() {
   };
 
   const moodLabels = [
-    { name: 'Happy', style: { top: '5%', left: '5%' } }, // Upper Left
+    { name: 'Chill', style: { top: '5%', left: '5%' } }, // Upper Left
     { name: 'Hype', style: { top: '5%', right: '5%' } }, // Upper Right
-    { name: 'Chill', style: { bottom: '5%', left: '5%' } }, // Lower Left
-    { name: 'Sad', style: { bottom: '5%', right: '5%' } }, // Lower Right
+    { name: 'Sad', style: { bottom: '5%', left: '5%' } }, // Lower Left
+    { name: 'Happy', style: { bottom: '5%', right: '5%' } }, // Lower Right
   ];
   const handlePlaylistButtonClick = () => {
     navigate('/pre-auth');
