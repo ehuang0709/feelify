@@ -3,7 +3,7 @@ import './PreAuthenticationScreen.css';
 
 function PreAuthenticationScreen() {
   const authenticate = () => {
-    window.location.href = 'http://localhost:5000/login';  // Navigate to the external URL
+    window.location.href = 'https://the-repo.onrender.com/login';  // Navigate to the external URL
   };
 
   return (
