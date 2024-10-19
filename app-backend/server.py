@@ -19,6 +19,7 @@ def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     return ''.join(random.choice(letters) for i in range(length))
 
+# LOGIN TO SPOTIFY ACCOUNT
 @app.route('/login')
 def login():
     state = generate_random_string(16)
@@ -34,6 +35,7 @@ def login():
     auth_url = 'https://accounts.spotify.com/authorize?' + urllib.parse.urlencode(query_params)
     return redirect(auth_url)
 
+# SPOTIFY API CALLBACK
 @app.route('/callback')
 def callback():
     code = request.args.get('code')
@@ -64,6 +66,7 @@ def callback():
 
     return token_data
 
+# GET USER RECENTLY PLAYED
 @app.route('/recently-played')
 def recently_played():
     access_token = session.get('access_token')
@@ -118,6 +121,7 @@ def recently_played():
 
     return {"artists_info": artists_info}
 
+# GET USER PLAYLISTS
 @app.route('/playlists')
 def playlists():
     access_token = session.get('access_token')
@@ -135,6 +139,7 @@ def playlists():
 
     return response.json()
 
+# GET ALL TRACKS IN THE PLAYLIST
 @app.route('/playlists/<playlist_id>')
 def playlist_tracks(playlist_id):
     access_token = session.get('access_token')
@@ -152,6 +157,7 @@ def playlist_tracks(playlist_id):
 
     return response.json()
 
+# GET USER TOP 5 ITEMS
 @app.route('/user-top-items')
 def user_top_items():
     access_token = session.get('access_token')
@@ -189,6 +195,7 @@ def user_top_items():
 
     return {"top_items": items_info} 
 
+# GENERATE SONG RECOMMENDATIONS
 @app.route('/recommendations', methods=['GET'])
 def generate_recommendations():
     # hard coded seed artists for testing
