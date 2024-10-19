@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'Super-Moods';
+  src: url('Super Moods.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -15,10 +22,11 @@ body {
 }
 
 .logo {
-  font-size: 8rem;
-  font-weight: bold;
+  font-size: 10rem;
+  font-weight: 400;
   letter-spacing: 10px;
   margin: 0;
+  font-family: 'Super-Moods', Arial, sans-serif;
 }
 
 .subtitle {
