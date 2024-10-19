@@ -35,41 +35,45 @@ body {
 
 .arrow-container {
   position: absolute;
-  bottom: 50px;
+  bottom: 60px;
   display: flex;
   justify-content: center;
   align-items: center;
   animation: bounce 2s infinite;
 }
 
-.circle {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  border: 3px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  transition: border-color 0.3s ease-in-out;
-  box-sizing: border-box;
-}
-
-.circle:hover {
-  border-color: transparent; 
-}
-
 .arrow {
   width: 0;
   height: 0;
-  border-top: 30px solid transparent;
-  border-bottom: 30px solid transparent;
-  border-left: 50px solid black;
+  border-top: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+  border-left: 44px solid black;
   transition: transform 0.2s;
 }
 
-.circle:hover .arrow {
+.arrow:hover {
   transform: scale(1.5) rotate(90deg);
+  cursor: pointer;  
 }
+
+.arrow:hover + .pause-lines {
+  opacity: 0;
+}
+
+.pause-lines {
+  display: flex;
+  margin-left: 10px;
+  gap: 5px; 
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.line {
+  width: 5px;
+  height: 40px;
+  background-color: black;
+}
+
 
 @keyframes bounce {
   0%, 100% {
