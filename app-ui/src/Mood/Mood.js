@@ -13,6 +13,8 @@ function Mood() {
 
   const [womenOnly, setWomenOnly] = useState(false);
   const [showPlaylistButton, setShowPlaylistButton] = useState(false);
+  var xNorm = 0;
+  var yNorm = 0;
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -20,6 +22,7 @@ function Mood() {
   const r = useMotionValue(240);
   const g = useMotionValue(240);
   const b = useMotionValue(240);
+
   
   const setDefaultGradient = () => {
     const defaultColor = 'rgb(220, 220, 220)'; // A light gray color
@@ -46,8 +49,8 @@ function Mood() {
     const lowerSection = document.querySelector('.lower-section');
     const rect = lowerSection.getBoundingClientRect();
   
-    const xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1); console.log("x norm ", xNorm);
-    const yNorm = Math.min(Math.max((yPos - rect.top) / rect.height, 0), 1);
+    xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1); 
+    yNorm = Math.min(Math.max((yPos - rect.top) / rect.height, 0), 1);
   
     const topLeft = { r: 191, g: 255, b: 127 };     // Pastel Yellow-Green
     const topRight = { r: 255, g: 191, b: 127 };    // Pastel Yellow-Red
@@ -149,6 +152,8 @@ function Mood() {
         <PlaylistButton
           showButton={showPlaylistButton}
           onClick={handlePlaylistButtonClick}
+          valence={xNorm}
+          energy={yNorm}
         />
       </div>
     </div>
