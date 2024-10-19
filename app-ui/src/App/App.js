@@ -4,6 +4,7 @@ import Mood from "../Mood/Mood.js"
 import PreAuthenticationScreen from '../PreAuthenticationScreen/PreAuthenticationScreen.js';
 import Home from '../Home/Home.js';
 import { AnimatePresence } from 'framer-motion';
+import Playlist from "../Playlist/Playlist.js"
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/" element={<Home/>} />
         <Route path="/mood" element={<Mood />} />
         <Route path="/pre-auth" element={<PreAuthenticationScreen />} />
+        <Route path = "/playlist" element = {<Playlist />} />
       </Routes>
       </AnimatePresence>
     </Router>
