@@ -1,7 +1,7 @@
 import React from 'react';
 import './PlaylistButton.css';
 
-function PlaylistButton({ showButton, onClick, valence, energy, color }) {
+function PlaylistButton({ showButton, onClick, color }) {
   if (!showButton) return null;
 
   const buttonStyle = {

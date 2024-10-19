@@ -1,11 +1,16 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './PreAuthenticationScreen.css';
+import { useLocation } from 'react-router-dom';
 
 function PreAuthenticationScreen() {
+  const location = useLocation();
   const authenticate = () => {
     window.location.href = 'https://the-repo.onrender.com/login';  // Navigate to the external URL
   };
+  const { energy, valence } = location.state || { energy: 0, valence: 0 };
+  console.log('Received energy:', energy);
+  console.log('Received valence:', valence);
 
   const navigate = useNavigate();
 

@@ -15,8 +15,8 @@ function Mood() {
   const [showPlaylistButton, setShowPlaylistButton] = useState(false);
   const [arrowPosition, setArrowPosition] = useState({ x: 0, y: 0 });
   const [currentColor, setCurrentColor] = useState({ r: 220, g: 220, b: 220 });
-  var xNorm = 0;
-  var yNorm = 0;
+  const [xNormValue, setXNormValue] = useState(0);
+  const [yNormValue, setYNormValue] = useState(0);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -51,8 +51,11 @@ function Mood() {
     const lowerSection = document.querySelector('.lower-section');
     const rect = lowerSection.getBoundingClientRect();
   
-    xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1); 
-    yNorm = Math.min(Math.max((yPos - rect.top) / rect.height, 0), 1);
+    const xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1); 
+    const yNorm = Math.min(Math.max((yPos - rect.top) / rect.height, 0), 1);
+
+    setXNormValue(xNorm);
+    setYNormValue(yNorm);
   
     const topLeft = { r: 191, g: 255, b: 127 };
     const topRight = { r: 255, g: 191, b: 127 };
@@ -101,7 +104,12 @@ function Mood() {
   ];
 
   const handlePlaylistButtonClick = () => {
-    navigate('/pre-auth');
+    navigate('/pre-auth', {
+      state: {
+        energy: yNormValue,
+        valence: xNormValue
+      }
+    });
   };
 
   const distance = (x1, y1, x2, y2) => {
@@ -172,8 +180,6 @@ function Mood() {
         <PlaylistButton
           showButton={showPlaylistButton}
           onClick={handlePlaylistButtonClick}
-          valence={xNorm}
-          energy={yNorm}
           color={currentColor}
         />
       </div>
