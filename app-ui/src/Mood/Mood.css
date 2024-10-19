@@ -1,84 +1,31 @@
 .mood-container {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #f0f0f0;
-  text-align: center;
   position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 100vh;
 }
 
 .text-container {
-  position: absolute;
-  top: 20%;
-  left: 50%;
-  transform: translateX(-50%);
   text-align: center;
-}
-
-h1 {
-  margin-bottom: 0.5rem;
-}
-
-h3 {
-  margin-top: 10;
-}
-
-.mood-area {
-  position: absolute;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 120px;
-  height: 120px;
+  padding-top: 50px;
 }
 
 .mood-label {
-  font-size: 1.2rem;
+  position: absolute;
+  font-size: 24px;
   font-weight: bold;
-  padding: 10px 20px;
-  border-radius: 20px;
-  background-color: rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-}
-
-.mood-label:hover {
-  transform: scale(1.1);
-}
-
-.top {
-  top: 2%;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.left {
-  left: 2%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.right {
-  right: 2%;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.bottom {
-  bottom: 2%;
-  left: 50%;
-  transform: translateX(-50%);
+  color: white;
+  text-shadow: 1px 1px 2px black;
+  user-select: none;
 }
 
 .draggable-arrow {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: grab;
   position: absolute;
+  cursor: grab;
+}
+
+.draggable-arrow:active {
+  cursor: grabbing;
 }
 
 .triangle {
@@ -90,22 +37,11 @@ h3 {
   transition: transform 0.2s;
 }
 
-/* Gradient backgrounds on hover */
-.top .mood-label:hover {
-  background: linear-gradient(to bottom, #ffeb3b, #ffc107);
-}
-
-.left .mood-label:hover {
-  background: linear-gradient(to right, #4caf50, #8bc34a);
-}
-
-.right .mood-label:hover {
-  background: linear-gradient(to left, #f44336, #e91e63);
-}
-
-.bottom .mood-label:hover {
-  background: linear-gradient(to top, #2196f3, #03a9f4);
-}
 .checkbox-container {
-  margin-top: 200px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  font-size: 16px;
+  color: white;
+  text-shadow: 1px 1px 2px black;
 }
