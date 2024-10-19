@@ -1,9 +1,13 @@
 // Playlist.js
 
 import React from 'react';
+import { useLocation } from 'react-router-dom';
 import './Playlist.css';
 
 function Playlist() {
+  const location = useLocation();
+  const { energy, valence } = location.state || { energy: 0, valence: 0 };
+
   return (
     <div className="playlist-container">
       <h1>Your Custom Playlist</h1>

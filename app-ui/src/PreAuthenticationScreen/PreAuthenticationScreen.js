@@ -19,12 +19,12 @@ function PreAuthenticationScreen() {
       });
       if (response.ok) {
         // If the user is authenticated, navigate to the playlist component
-        navigate('/playlist');
+        navigate('/playlist', { state: { energy, valence } });
       }
     };
 
     checkAuth();
-  }, [navigate]);
+  }, [navigate, energy, valence]);
 
   return (
     <div className="pre-auth-container">
