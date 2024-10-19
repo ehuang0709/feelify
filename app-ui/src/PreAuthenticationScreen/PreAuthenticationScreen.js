@@ -1,14 +1,7 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import './PreAuthenticationScreen.css';
 
 function PreAuthenticationScreen() {
-  // const navigate = useNavigate();
-
-  // const authenticate = () => {
-  //   navigate('localhost:5000/login'); 
-  // };
-
   const authenticate = () => {
     window.location.href = 'http://localhost:5000/login';  // Navigate to the external URL
   };
