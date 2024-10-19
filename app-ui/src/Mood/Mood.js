@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 import './Mood.css';
+import PlaylistButton from '../PlaylistButton/PlaylistButton';
 
 function Mood() {
   const [windowSize, setWindowSize] = useState({
@@ -9,9 +10,10 @@ function Mood() {
   });
 
   const [womenOnly, setWomenOnly] = useState(false);
+  const [showPlaylistButton, setShowPlaylistButton] = useState(false);
 
-  const x = useMotionValue(windowSize.width / 2);
-  const y = useMotionValue(windowSize.height / 2);
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
 
   const r = useMotionValue(240);
   const g = useMotionValue(240);
@@ -35,9 +37,11 @@ function Mood() {
   };
 
   const updateBackground = (xPos, yPos) => {
-    const xNorm = Math.min(Math.max(xPos / windowSize.width, 0), 1);
-    const yNorm = Math.min(Math.max(yPos / windowSize.height, 0), 1);
+    const lowerSection = document.querySelector('.lower-section');
+    const rect = lowerSection.getBoundingClientRect();
 
+    const xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1);
+    const yNorm = Math.min(Math.max((yPos - rect.top) / rect.height, 0), 1);
     // Pastel corner colors (blended with white)
     const topLeft = { r: 191, g: 255, b: 127 };     // Pastel Yellow-Green
     const topRight = { r: 255, g: 191, b: 127 };    // Pastel Yellow-Red
@@ -90,48 +94,60 @@ function Mood() {
   // Define mood labels and positions
   const moodLabels = [
     {
-      name: 'Relaxed',
-      style: { top: '10%', left: '10%' }, // Upper Left
+      name: 'Happy',
+      style: { top: '5%', left: '5%' }, // Upper Left
     },
     {
-      name: 'Excited',
-      style: { top: '10%', right: '10%' }, // Upper Right
+      name: 'Hype',
+      style: { top: '5%', right: '5%' }, // Upper Right
     },
     {
-      name: 'Calm',
-      style: { bottom: '10%', left: '10%' }, // Lower Left
+      name: 'Chill',
+      style: { bottom: '5%', left: '5%' }, // Lower Left
     },
     {
-      name: 'Energetic',
-      style: { bottom: '10%', right: '10%' }, // Lower Right
+      name: 'Sad',
+      style: { bottom: '5%', right: '5%' }, // Lower Right
     },
   ];
 
   return (
     <div className="mood-container">
       <div className="text-container">
-        <h1>How are you feeling today?</h1>
-        <h3>Drag the play arrow icon to where you resonate!</h3>
+        <h1>HOW ARE YOU FEELING TODAY?</h1>
+        <h3>DRAG THE PLAY ICON TO WHERE YOU RESONATE</h3>
       </div>
 
-      {/* Render Mood Labels */}
-      {moodLabels.map((mood) => (
-        <div key={mood.name} className="mood-label" style={mood.style}>
-          {mood.name}
-        </div>
-      ))}
+      <div className="lower-section">
+        {/* Render Mood Labels */}
+        {moodLabels.map((mood) => (
+          <div key={mood.name} className="mood-label" style={mood.style}>
+            {mood.name}
+          </div>
+        ))}
 
-      <motion.div
-        className="draggable-arrow"
-        drag
-        dragMomentum={false}
-        style={{ x, y }}
-        onDrag={(event, info) => updateBackground(info.point.x, info.point.y)}
-        whileHover={{ scale: 1.2 }}
-        whileTap={{ scale: 0.8 }}
-      >
-        <div className="triangle"></div>
-      </motion.div>
+        <motion.div
+          className="draggable-arrow"
+          drag
+          dragMomentum={false}
+          dragConstraints={{
+            left: -windowSize.width / 2 + 22.5,
+            right: windowSize.width / 2 - 22.5,
+            top: -windowSize.height / 2 + 25,
+            bottom: windowSize.height / 2 - 25
+          }}
+          style={{ x, y }}
+          onDrag={(event, info) => {
+            updateBackground(info.point.x, info.point.y);
+            setShowPlaylistButton(true);
+          }}
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.8 }}
+        >
+          <div className="triangle"></div>
+        </motion.div>
+      </div>
+
       <div className="checkbox-container">
         <label>
           <input
@@ -142,6 +158,13 @@ function Mood() {
           Female Artists Only
         </label>
       </div>
+
+<div className={`button-container ${showPlaylistButton ? 'show-button' : ''}`}>
+  <PlaylistButton
+    showButton={showPlaylistButton}
+    onClick={() => alert('Generating playlist...')}
+  />
+</div>
     </div>
   );
 }

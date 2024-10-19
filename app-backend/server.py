@@ -9,17 +9,17 @@ import string
 
 app = Flask(__name__)
 app.secret_key = '51e718937f025e5ea3af64b1c45ad9aa943a622ef85fd6afd75d72b7225e7b06'
-CORS(app, resources={r"/*": {"origins": "https://feelify.netlify.app"}})
+CORS(app)
 
 CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
 CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
-# REDIRECT_URI = 'http://localhost:3000/callback'
-REDIRECT_URI = 'https://the-repo.onrender.com/callback'
+REDIRECT_URI = 'http://localhost:3000/callback'
 
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     return ''.join(random.choice(letters) for i in range(length))
 
+# LOGIN TO SPOTIFY ACCOUNT
 @app.route('/login')
 def login():
     state = generate_random_string(16)
@@ -35,6 +35,7 @@ def login():
     auth_url = 'https://accounts.spotify.com/authorize?' + urllib.parse.urlencode(query_params)
     return redirect(auth_url)
 
+# SPOTIFY API CALLBACK
 @app.route('/callback')
 def callback():
     code = request.args.get('code')
@@ -65,6 +66,7 @@ def callback():
 
     return token_data
 
+# GET USER RECENTLY PLAYED
 @app.route('/recently-played')
 def recently_played():
     access_token = session.get('access_token')
@@ -119,6 +121,7 @@ def recently_played():
 
     return {"artists_info": artists_info}
 
+# GET USER PLAYLISTS
 @app.route('/playlists')
 def playlists():
     access_token = session.get('access_token')
@@ -136,6 +139,7 @@ def playlists():
 
     return response.json()
 
+# GET ALL TRACKS IN THE PLAYLIST
 @app.route('/playlists/<playlist_id>')
 def playlist_tracks(playlist_id):
     access_token = session.get('access_token')
@@ -153,6 +157,76 @@ def playlist_tracks(playlist_id):
 
     return response.json()
 
+# GET USER TOP 5 ITEMS
+@app.route('/user-top-items')
+def user_top_items():
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    item_type = request.args.get('type', 'artists')
+    time_range = request.args.get('time_range', 'medium_term')
+    limit = request.args.get('limit', 5)
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get(f'https://api.spotify.com/v1/me/top/{item_type}', headers=headers, params={
+        'time_range': time_range,
+        'limit': limit
+    })
+
+    if response.status_code != 200:
+        return f"<pre>Error fetching top {item_type}: {response.status_code}, {response.text}</pre>"
+
+    data = response.json()
+    items_info = []
+
+    for artist in data['items']:
+        items_info.append({
+            'id': artist['id'],
+            'artist_name': artist['name'],
+            'genres': artist.get('genres', []),
+            'followers': artist['followers']['total'],
+            'popularity': artist['popularity'],
+            'image_url': artist.get('images', [{}])[0].get('url', '')
+        })
+
+    return {"top_items": items_info} 
+
+# GENERATE SONG RECOMMENDATIONS
+@app.route('/recommendations', methods=['POST'])
+def generate_recommendations():
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    data = request.json
+
+    seed_artists = data.get('seed_artists', [])
+    target_energy = data.get('target_energy')
+    target_valence = data.get('target_valence')
+    limit = 20
+
+    params = {
+        'seed_artists': ','.join(seed_artists),
+        'limit': limit,
+        'target_energy': target_energy,
+        'target_valence': target_valence
+    }
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    response = requests.get('https://api.spotify.com/v1/recommendations', headers=headers, params=params)
+
+    if response.status_code != 200:
+        return f"<pre>Error fetching recommendations: {response.status_code}, {response.text}</pre>"
+
+    return response.json()
+
+# CREATE PLAYLIST
 @app.route('/create-playlist', methods=['POST'])
 def create_playlist():
     access_token = session.get('access_token')
@@ -221,10 +295,4 @@ def create_playlist():
         return jsonify({'error': 'Error creating playlist', 'details': response.json()}), response.status_code
 
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=3000)
     app.run(port=3000)
-
-# @app.route('/', methods=['POST'])
-# def generate_recommendations():
-#     data = request.json
-#     print(data)
