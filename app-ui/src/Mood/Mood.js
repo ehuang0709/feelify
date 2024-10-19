@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import './Mood.css';
 
@@ -10,6 +10,11 @@ function Mood() {
     { name: 'Sad', position: 'bottom' },
   ];
 
+  const [womenOnly, setFemaleOnly] = useState(false);
+
+  const handleCheckboxChange = (event) => {
+    setFemaleOnly(event.target.checked);
+  };
   return (
     <div className="mood-container">
       <div className="text-container">
@@ -35,6 +40,16 @@ function Mood() {
       >
         <div className="triangle"></div>
       </motion.div>
+      <div className="checkbox-container">
+        <label>
+          <input 
+            type="checkbox" 
+            checked={womenOnly} 
+            onChange={handleCheckboxChange} 
+          />
+          Female Artists Only
+        </label>
+      </div>
     </div>
   );
 }

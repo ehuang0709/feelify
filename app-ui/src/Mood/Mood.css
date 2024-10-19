@@ -106,3 +106,6 @@ h3 {
 .bottom .mood-label:hover {
   background: linear-gradient(to top, #2196f3, #03a9f4);
 }
+.checkbox-container {
+  margin-top: 200px;
+}
