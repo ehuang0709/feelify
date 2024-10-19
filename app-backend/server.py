@@ -14,7 +14,8 @@ CORS(app)
 CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
 CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
 # REDIRECT_URI = 'http://localhost:3000/callback'
-REDIRECT_URI = 'https://the-repo.onrender.com/callback'
+# REDIRECT_URI = 'https://the-repo.onrender.com/callback'
+REDIRECT_URI = 'https://feelify.netlify.app/playlist'
 
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
@@ -63,9 +64,14 @@ def callback():
     
     response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
     token_data = response.json()
-    session['access_token'] = token_data.get('access_token')
+    access_token = token_data.get('access_token')
 
-    return token_data
+    if access_token:
+        session['access_token'] = access_token
+        # Redirect to the frontend playlist page
+        return redirect('https://feelify.netlify.app/playlist')  
+    else:
+        return redirect('/?' + urllib.parse.urlencode({'error': 'access_denied'}))
 
 # GET USER RECENTLY PLAYED
 @app.route('/recently-played')
