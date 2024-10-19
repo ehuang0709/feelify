@@ -164,7 +164,7 @@ def user_top_items():
     if not access_token:
         return redirect('/login')
 
-    item_type = request.args.get('type', 'artists')
+    item_type = request.args.get('type', 'tracks')
     time_range = request.args.get('time_range', 'medium_term')
     limit = request.args.get('limit', 5)
 
@@ -226,18 +226,90 @@ def generate_recommendations():
 
     return response.json()
 
+# # CREATE PLAYLIST
+# @app.route('/create-playlist', methods=['POST'])
+# def create_playlist():
+#     access_token = session.get('access_token')
+#     if not access_token:
+#         return redirect('/login')
+
+#     # Get recommended tracks
+#     recommended_songs = request.json.get('recommended_songs', [])
+#     track_uris = []
+
+#     for song in recommended_songs:
+#         song_name = song.get('name')
+#         artist_name = song.get('artist')
+
+#         search_url = 'https://api.spotify.com/v1/search'
+#         query = f"track:{song_name} artist:{artist_name}"
+#         params = {
+#             'q': query,
+#             'type': 'track',
+#             'limit': 1
+#         }
+
+#         headers = {
+#             'Authorization': f'Bearer {access_token}'
+#         }
+
+#         search_response = requests.get(search_url, headers=headers, params=params)
+
+#         if search_response.status_code == 200:
+#             search_results = search_response.json()
+#             tracks = search_results.get('tracks', {}).get('items', [])
+#             if tracks:
+#                 track_uri = tracks[0]['uri']
+#                 track_uris.append(track_uri)
+
+#     # Create a new playlist
+#     headers = {
+#         'Authorization': f'Bearer {access_token}',
+#         'Content-Type': 'application/json'
+#     }
+
+#     create_playlist_url = 'https://api.spotify.com/v1/me/playlists'
+#     playlist_name = "feelify playlist"
+#     save_playlist = request.json.get('save_playlist', False)
+#     playlist_data = {
+#         'name': playlist_name,
+#         'public': save_playlist,
+#         'description': 'Generated playlist from recommendations'
+#     }
+
+    
+#     response = requests.post(create_playlist_url, headers=headers, json=playlist_data)
+
+#     # Add tracks to the new playlist 
+#     if response.status_code == 201:
+#         playlist_id = response.json()['id']
+#         if track_uris:
+#             add_tracks_url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
+#             add_tracks_data = {
+#                 'uris': track_uris
+#             }
+#             requests.post(add_tracks_url, headers=headers, json=add_tracks_data)
+
+#         return jsonify({'message': 'Playlist created successfully', 'playlist_id': playlist_id})
+#     else:
+#         return jsonify({'error': 'Error creating playlist', 'details': response.json()}), response.status_code
+
 # CREATE PLAYLIST
-@app.route('/create-playlist', methods=['POST'])
+@app.route('/create-playlist')
 def create_playlist():
     access_token = session.get('access_token')
     if not access_token:
         return redirect('/login')
 
-    # Get recommended tracks
-    recommended_songs = request.json.get('recommended_songs', [])
-    playlist_name = "feelify flaylist"
-    save_playlist = request.json.get('save_playlist', False)
-
+    # Hardcoded recommended songs data for testing
+    recommended_songs = [
+        {'name': 'Shape of You', 'artist': 'Ed Sheeran'},
+        {'name': 'Blinding Lights', 'artist': 'The Weeknd'},
+        {'name': 'Levitating', 'artist': 'Dua Lipa'},
+        {'name': 'Dance Monkey', 'artist': 'Tones and I'},
+        {'name': 'Sunflower', 'artist': 'Post Malone'}
+    ]
+    
     track_uris = []
 
     for song in recommended_songs:
@@ -272,17 +344,19 @@ def create_playlist():
     }
 
     create_playlist_url = 'https://api.spotify.com/v1/me/playlists'
+    playlist_name = "feelify playlist"
+    save_playlist = True  # Hardcoded to save the playlist publicly for testing
     playlist_data = {
         'name': playlist_name,
         'public': save_playlist,
-        'description': 'Generated Playlist from Recommendations'
+        'description': 'Generated playlist from recommendations'
     }
 
     response = requests.post(create_playlist_url, headers=headers, json=playlist_data)
 
+    # Add tracks to the new playlist
     if response.status_code == 201:
         playlist_id = response.json()['id']
-        # Add tracks to the new playlist 
         if track_uris:
             add_tracks_url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
             add_tracks_data = {
