@@ -179,6 +179,7 @@ def user_top_items():
 
     for artist in data['items']:
         items_info.append({
+            'id': artist['id'],
             'artist_name': artist['name'],
             'genres': artist.get('genres', []),
             'followers': artist['followers']['total'],
@@ -188,11 +189,37 @@ def user_top_items():
 
     return {"top_items": items_info} 
 
+@app.route('/recommendations', methods=['GET'])
+def generate_recommendations():
+    # hard coded seed artists for testing
+    seed_artists = ["0BezPR1Hn38i8qShQKunSD", "3Nrfpe0tUJi4K4DXYWgMUX", "2elBjNSdBE2Y3f0j1mjrql"]
+
+    target_energy = 0.7
+    target_valence = 0.6
+    limit = 20
+
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    params = {
+        'seed_artists': ','.join(seed_artists),
+        'limit': limit,
+        'target_energy': target_energy,
+        'target_valence': target_valence
+    }
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    response = requests.get('https://api.spotify.com/v1/recommendations', headers=headers, params=params)
+
+    if response.status_code != 200:
+        return f"<pre>Error fetching recommendations: {response.status_code}, {response.text}</pre>"
+
+    return response.json()
+
+
 
 if __name__ == '__main__':
     app.run(port=3000)
-
-@app.route('/', methods=['POST'])
-def generate_recommendations():
-    data = request.json
-    print(data)
