@@ -80,40 +80,43 @@ def recently_played():
         return f"<pre>Error fetching recently played tracks: {response.status_code}, {response.text}</pre>"
 
     data = response.json()
-    albums_info = []
+    artists_info = []
 
     for item in data['items']:
         track = item['track']
-        album = track['album']
-        album_id = album['id']
-        album_type = album['album_type']
+        artists = track['artists']  # List of artists for the track
 
-        album_response = requests.get(
-            f'https://api.spotify.com/v1/albums/{album_id}',
-            headers={'Authorization': f'Bearer {access_token}'}
-        )
+        for artist in artists:
+            artist_id = artist['id']
+            artist_name = artist['name']
 
-        if album_response.status_code == 200:
-            album_details = album_response.json()
-            genres = album_details.get('genres', [])
-            albums_info.append({
-                'album_id': album_id,
-                'album_type': album_type,
-                'genres': genres,
-                'album_name': album['name'],
-                'release_date': album['release_date']
-            })
-        else:
-            albums_info.append({
-                'album_id': album_id,
-                'album_type': album_type,
-                'genres': [],
-                'album_name': album['name'],
-                'release_date': album['release_date'],
-                'error': 'Unable to fetch album details'
-            })
+            # Fetch artist details
+            artist_response = requests.get(
+                f'https://api.spotify.com/v1/artists/{artist_id}',
+                headers={'Authorization': f'Bearer {access_token}'}
+            )
 
-    return {"albums_info": albums_info}
+            if artist_response.status_code == 200:
+                artist_details = artist_response.json()
+                genres = artist_details.get('genres', [])
+                followers = artist_details.get('followers', {}).get('total', 0)
+                artists_info.append({
+                    'artist_id': artist_id,
+                    'artist_name': artist_name,
+                    'genres': genres,
+                    'followers': followers,
+                    'image_url': artist_details.get('images', [{}])[0].get('url', '')  # First image URL, if available
+                })
+            else:
+                artists_info.append({
+                    'artist_id': artist_id,
+                    'artist_name': artist_name,
+                    'genres': [],
+                    'followers': 0,
+                    'error': 'Unable to fetch artist details'
+                })
+
+    return {"artists_info": artists_info}
 
 @app.route('/playlists')
 def playlists():
@@ -149,11 +152,47 @@ def playlist_tracks(playlist_id):
 
     return response.json()
 
+@app.route('/user-top-items')
+def user_top_items():
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    item_type = request.args.get('type', 'artists')
+    time_range = request.args.get('time_range', 'medium_term')
+    limit = request.args.get('limit', 5)
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+
+    response = requests.get(f'https://api.spotify.com/v1/me/top/{item_type}', headers=headers, params={
+        'time_range': time_range,
+        'limit': limit
+    })
+
+    if response.status_code != 200:
+        return f"<pre>Error fetching top {item_type}: {response.status_code}, {response.text}</pre>"
+
+    data = response.json()
+    items_info = []
+
+    for artist in data['items']:
+        items_info.append({
+            'artist_name': artist['name'],
+            'genres': artist.get('genres', []),
+            'followers': artist['followers']['total'],
+            'popularity': artist['popularity'],
+            'image_url': artist.get('images', [{}])[0].get('url', '')
+        })
+
+    return {"top_items": items_info} 
+
+
 if __name__ == '__main__':
-    # app.run(host='0.0.0.0', port=3000)
     app.run(port=3000)
 
-# @app.route('/', methods=['POST'])
-# def generate_recommendations():
-#     data = request.json
-#     print(data)
+@app.route('/', methods=['POST'])
+def generate_recommendations():
+    data = request.json
+    print(data)
