@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 CLIENT_ID = os.env.SPOTIFY_CLIENT_ID
 CLIENT_SECRET = os.env.SPOTIFY_CLIENT_SECRET
-REDIRECT_URI = 'http://localhost:8888/callback'
+REDIRECT_URI = 'http://localhost:3000/callback'
 
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
@@ -19,7 +19,7 @@ def generate_random_string(length):
 @app.route('/login')
 def login():
     state = generate_random_string(16)
-    scope = 'user-read-private user-read-email'
+    scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-public user-follow-read user-top-read user-read-recently-played user-library-read'
     
     query_params = {
         'response_type': 'code',
