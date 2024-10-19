@@ -20,7 +20,7 @@ function Playlist() {
 
   return (
     <div className="playlist-container">
-      <h1>Your Custom Playlist</h1>
+      <h1 className="playlist-title">Your Custom Playlist</h1>
 
       {/* Embedded Playlist */}
       <div className="embedded-playlist">

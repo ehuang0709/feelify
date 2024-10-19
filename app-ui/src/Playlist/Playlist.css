@@ -5,7 +5,12 @@
     margin: 0 auto;
     text-align: center;
   }
-  
+  .playlist-title {
+    font-family: 'Super-Water';
+    font-weight: normal;
+    font-size: 50px; 
+  }
+
   .embedded-playlist {
     margin: 20px 0;
   }
