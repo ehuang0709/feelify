@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, send_file, session
+from flask import Flask, request, redirect, send_file, session, jsonify
 from flask_cors import CORS
 import requests
 import urllib.parse
@@ -19,6 +19,7 @@ def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     return ''.join(random.choice(letters) for i in range(length))
 
+# LOGIN TO SPOTIFY ACCOUNT
 @app.route('/login')
 def login():
     state = generate_random_string(16)
@@ -34,6 +35,7 @@ def login():
     auth_url = 'https://accounts.spotify.com/authorize?' + urllib.parse.urlencode(query_params)
     return redirect(auth_url)
 
+# SPOTIFY API CALLBACK
 @app.route('/callback')
 def callback():
     code = request.args.get('code')
@@ -64,6 +66,7 @@ def callback():
 
     return token_data
 
+# GET USER RECENTLY PLAYED
 @app.route('/recently-played')
 def recently_played():
     access_token = session.get('access_token')
@@ -118,6 +121,7 @@ def recently_played():
 
     return {"artists_info": artists_info}
 
+# GET USER PLAYLISTS
 @app.route('/playlists')
 def playlists():
     access_token = session.get('access_token')
@@ -135,6 +139,7 @@ def playlists():
 
     return response.json()
 
+# GET ALL TRACKS IN THE PLAYLIST
 @app.route('/playlists/<playlist_id>')
 def playlist_tracks(playlist_id):
     access_token = session.get('access_token')
@@ -152,6 +157,7 @@ def playlist_tracks(playlist_id):
 
     return response.json()
 
+# GET USER TOP 5 ITEMS
 @app.route('/user-top-items')
 def user_top_items():
     access_token = session.get('access_token')
@@ -179,6 +185,7 @@ def user_top_items():
 
     for artist in data['items']:
         items_info.append({
+            'id': artist['id'],
             'artist_name': artist['name'],
             'genres': artist.get('genres', []),
             'followers': artist['followers']['total'],
@@ -188,11 +195,104 @@ def user_top_items():
 
     return {"top_items": items_info} 
 
+# GENERATE SONG RECOMMENDATIONS
+@app.route('/recommendations', methods=['POST'])
+def generate_recommendations():
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    data = request.json
+
+    seed_artists = data.get('seed_artists', [])
+    target_energy = data.get('target_energy')
+    target_valence = data.get('target_valence')
+    limit = 20
+
+    params = {
+        'seed_artists': ','.join(seed_artists),
+        'limit': limit,
+        'target_energy': target_energy,
+        'target_valence': target_valence
+    }
+
+    headers = {
+        'Authorization': f'Bearer {access_token}'
+    }
+    response = requests.get('https://api.spotify.com/v1/recommendations', headers=headers, params=params)
+
+    if response.status_code != 200:
+        return f"<pre>Error fetching recommendations: {response.status_code}, {response.text}</pre>"
+
+    return response.json()
+
+# CREATE PLAYLIST
+@app.route('/create-playlist', methods=['POST'])
+def create_playlist():
+    access_token = session.get('access_token')
+    if not access_token:
+        return redirect('/login')
+
+    # Get recommended tracks
+    recommended_songs = request.json.get('recommended_songs', [])
+    playlist_name = "feelify flaylist"
+    save_playlist = request.json.get('save_playlist', False)
+
+    track_uris = []
+
+    for song in recommended_songs:
+        song_name = song.get('name')
+        artist_name = song.get('artist')
+
+        search_url = 'https://api.spotify.com/v1/search'
+        query = f"track:{song_name} artist:{artist_name}"
+        params = {
+            'q': query,
+            'type': 'track',
+            'limit': 1
+        }
+
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
+
+        search_response = requests.get(search_url, headers=headers, params=params)
+
+        if search_response.status_code == 200:
+            search_results = search_response.json()
+            tracks = search_results.get('tracks', {}).get('items', [])
+            if tracks:
+                track_uri = tracks[0]['uri']
+                track_uris.append(track_uri)
+
+    # Create a new playlist
+    headers = {
+        'Authorization': f'Bearer {access_token}',
+        'Content-Type': 'application/json'
+    }
+
+    create_playlist_url = 'https://api.spotify.com/v1/me/playlists'
+    playlist_data = {
+        'name': playlist_name,
+        'public': save_playlist,
+        'description': 'Generated Playlist from Recommendations'
+    }
+
+    response = requests.post(create_playlist_url, headers=headers, json=playlist_data)
+
+    if response.status_code == 201:
+        playlist_id = response.json()['id']
+        # Add tracks to the new playlist 
+        if track_uris:
+            add_tracks_url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
+            add_tracks_data = {
+                'uris': track_uris
+            }
+            requests.post(add_tracks_url, headers=headers, json=add_tracks_data)
+
+        return jsonify({'message': 'Playlist created successfully', 'playlist_id': playlist_id})
+    else:
+        return jsonify({'error': 'Error creating playlist', 'details': response.json()}), response.status_code
 
 if __name__ == '__main__':
     app.run(port=3000)
-
-@app.route('/', methods=['POST'])
-def generate_recommendations():
-    data = request.json
-    print(data)

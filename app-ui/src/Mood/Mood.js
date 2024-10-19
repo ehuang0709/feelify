@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, useMotionValue } from 'framer-motion';
 import './Mood.css';
+import PlaylistButton from '../PlaylistButton/PlaylistButton';
 
 function Mood() {
   const [windowSize, setWindowSize] = useState({
@@ -9,10 +10,11 @@ function Mood() {
   });
 
   const [womenOnly, setWomenOnly] = useState(false);
+  const [showPlaylistButton, setShowPlaylistButton] = useState(false);
 
   const x = useMotionValue(0);
   const y = useMotionValue(0);
-  
+
   const r = useMotionValue(240);
   const g = useMotionValue(240);
   const b = useMotionValue(240);
@@ -95,7 +97,7 @@ function Mood() {
         <h1>HOW ARE YOU FEELING TODAY?</h1>
         <h3>DRAG THE PLAY ICON TO WHERE YOU RESONATE</h3>
       </div>
-  
+
       <div className="lower-section">
         {/* Render Mood Labels */}
         {moodLabels.map((mood) => (
@@ -126,7 +128,7 @@ function Mood() {
           <div className="triangle"></div>
         </motion.div>
       </div>
-  
+
       <div className="checkbox-container">
         <label>
           <input
@@ -137,6 +139,13 @@ function Mood() {
           Female Artists Only
         </label>
       </div>
+
+<div className={`button-container ${showPlaylistButton ? 'show-button' : ''}`}>
+  <PlaylistButton
+    showButton={showPlaylistButton}
+    onClick={() => alert('Generating playlist...')}
+  />
+</div>
     </div>
   );
 }
