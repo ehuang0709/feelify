@@ -20,12 +20,15 @@
 
 .text-container {
   text-align: center;
-  padding-top: 150px;
+  padding-top: 100px; /* Reduced top padding */
   font-family: 'Mortend-Bold', Arial, sans-serif;
-  font-weight: 200
+  font-weight: 200;
 }
+
+
 .text-container h1 {
   font-size: 4rem;
+  
   font-weight: 10;
   font-family: 'Super-Water', Arial, sans-serif;
   margin-bottom: 0.5rem;
@@ -50,6 +53,9 @@
 .draggable-arrow {
   position: absolute;
   cursor: grab;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .draggable-arrow:active {
