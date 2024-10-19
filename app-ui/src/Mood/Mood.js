@@ -102,12 +102,11 @@ function Mood() {
     { name: 'Hype', style: { bottom: '5%', left: '50%' } },
     { name: 'Sad', style: { bottom: '50%', left: '5%' } },
   ];
-  console.log("energy " + yNormValue + " valence " + xNormValue);
 
   const handlePlaylistButtonClick = () => {
     navigate('/pre-auth', {
       state: {
-        energy: yNormValue,
+        energy: yNormValue/0.67,
         valence: xNormValue
       }
     });
