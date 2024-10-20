@@ -97,9 +97,9 @@ function Mood() {
   };
 
   const moodLabels = [
-    { name: 'Chill', style: { top: '5%', left: '50%' } },
+    { name: 'Chill', style: { top: '5%', left: '47.5%' } },
     { name: 'Happy', style: { top: '50%', right: '5%' } },
-    { name: 'Hype', style: { bottom: '5%', left: '50%' } },
+    { name: 'Hype', style: { bottom: '5%', left: '47.5%' } },
     { name: 'Sad', style: { bottom: '50%', left: '5%' } },
   ];
 
