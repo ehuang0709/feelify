@@ -8,6 +8,17 @@ function getQueryParams() {
   const params = {};
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
+
+  const artistData = JSON.parse(decodeURIComponent(urlParams.get('artist_data')));
+
+  artistData.forEach(artist => {
+    console.log(`Artist Name: ${artist.artist_name}`);
+    console.log(`Artist URI: ${artist.artist_uri}`);
+    console.log(`Popularity: ${artist.popularity}`);
+    console.log(`Image URL: ${artist.image_url}`);
+    console.log(`Spotify URL: ${artist.spotify_url}`);
+  });
+
   
   for (const [key, value] of urlParams.entries()) {
       params[key] = value;
