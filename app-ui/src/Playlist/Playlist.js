@@ -31,7 +31,7 @@ function getQueryParams() {
   for (const [key, value] of urlParams.entries()) {
       params[key] = value;
   }
-  return params;
+  return { params, formattedArtistData };
 }
 
 function Playlist() {
@@ -125,19 +125,12 @@ function Playlist() {
       <h2 className="featured-artists-title">Featured Artists in This Playlist</h2>
 
       <div className="boxes-container">
-        <div className="box">
-          <img src="https://via.placeholder.com/150" alt="Test Image 1" className="box-image" />
-          <h3 className="box-title">Test Title 1</h3>
-        </div>
-        <div className="box">
-          <img src="https://via.placeholder.com/150" alt="Test Image 2" className="box-image" />
-          <h3 className="box-title">Test Title 2</h3>
-        </div>
-        <div className="box">
-          <img src="https://via.placeholder.com/150" alt="Test Image 3" className="box-image" />
-          <h3 className="box-title">Test Title 3</h3>
-        </div>
-        {/* Add more boxes as needed */}
+        {formattedArtistData.slice(0, 3).map((artist, index) => (
+          <div className="box" key={index}>
+            <img src={artist.imageUrl} alt={artist.name} className="box-image" />
+            <h3 className="box-title">{artist.name}</h3>
+          </div>
+        ))}
       </div>
 
       {/* Buttons Section */}
