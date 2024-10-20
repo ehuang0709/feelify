@@ -6,7 +6,7 @@ import { useLocation } from 'react-router-dom';
 function PreAuthenticationScreen() {
   const location = useLocation();
   const authenticate = () => {
-    window.location.href = `https://the-repo.onrender.com/logi?energy=${energy}&valence=${valence}`;  // Navigate to the external URL
+    window.location.href = `https://the-repo.onrender.com/login?energy=${energy}&valence=${valence}`;  // Navigate to the external URL
   };
   const { energy, valence } = location.state || {};
   console.log("energy: " + energy + "valence: " + valence)
