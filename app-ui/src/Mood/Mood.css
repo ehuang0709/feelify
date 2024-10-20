@@ -37,7 +37,7 @@
   font-size: 1.5rem;
   font-weight: bold;
   letter-spacing: 1px;
-  font-family:  Arial, sans-serif;
+  font-family:  'Mortend-Bold', Arial, sans-serif;
 }
 
 .mood-label {
@@ -79,24 +79,37 @@
   color: white;
   text-shadow: 1px 1px 2px black;
 }
-
+.spontaneous-quiz-text {
+  margin: 10px 0;
+  font-size: 16px;
+  color: #333; /* Adjust color as needed */
+  text-align: center; /* Center the text */
+  position: fixed;
+  top: 65%;
+  left: 33%;
+}
 .start-quiz-button {
-  background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white background */
-  color: #000; /* Black text */
-  border: none; /* No border */
-  width: 100px; /* Increased width for wide rectangle */
-  height: 30px; /* Height to maintain rectangular shape */
-  font-size: 1.2rem; /* Adjusted font size */
-  font-family: sans-serif; /* Custom bold font */
-  border-radius: 10px; /* Rounded corners for a smooth look */
+  background-color: rgba(255, 255, 255, 0.5);
+  color: #000;
+  border: none;
+  width: 100px;
+  height: 30px;
+  font-size: 1.2rem;
+  font-family: sans-serif;
+  border-radius: 10px;
   cursor: pointer;
   margin-top: 10px;
-  box-shadow: 0px 4px 12px rgba(128, 128, 128, 0.3); /* Softer shadow */
+  box-shadow: 0px 4px 12px rgba(128, 128, 128, 0.3);
   transition: background-color 0.3s ease, transform 0.2s ease;
+
+  position: fixed;
+  top: 70%; 
+  left: 46%;
+
 }
 
 .start-quiz-button:hover {
-  background-color: rgba(255, 255, 255, 0.7); /* Slightly more opaque on hover */
-  transform: scale(1.1); /* Slight zoom effect */
-  box-shadow: 0px 0px 12px 3px rgba(128, 128, 128, 0.4); /* Stronger shadow on hover */
+  background-color: rgba(255, 255, 255, 0.7);
+  transform: scale(1.1);
+  box-shadow: 0px 0px 12px 3px rgba(128, 128, 128, 0.4);
 }
