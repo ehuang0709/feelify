@@ -21,6 +21,15 @@ def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     return ''.join(random.choice(letters) for i in range(length))
 
+# CHECK USER AUTHENTICATION
+@app.route('/check-auth')
+def check_auth():
+    access_token = session.get('access_token')
+    if access_token:
+        return jsonify({'authenticated': True})
+    else:
+        return jsonify({'authenticated': False})
+
 # LOGIN TO SPOTIFY ACCOUNT
 @app.route('/login')
 def login():

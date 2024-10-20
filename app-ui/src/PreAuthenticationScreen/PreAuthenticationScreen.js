@@ -14,12 +14,17 @@ function PreAuthenticationScreen() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const response = await fetch('https://the-repo.onrender.com/login', {
-        mode: "no-cors"
+      const response = await fetch('https://the-repo.onrender.com/check-auth', {
+        credentials: 'include', 
       });
+
       if (response.ok) {
-        // If the user is authenticated, navigate to the playlist component
-        navigate('/playlist', { state: { energy, valence } });
+        const data = await response.json();
+        if (data.authenticated) {
+          navigate('/playlist', { state: { energy, valence } });
+        } else {
+          window.location.href = 'https://the-repo.onrender.com/login';
+        }
       }
     };
 
