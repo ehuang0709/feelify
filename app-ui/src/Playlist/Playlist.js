@@ -8,30 +8,11 @@ function getQueryParams() {
   const params = {};
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
-
-  const artistData = JSON.parse(decodeURIComponent(urlParams.get('artist_data')));
-
-  artistData.sort((a, b) => b.popularity - a.popularity);
-
-  const formattedArtistData = [];
-
-  artistData.forEach(artist => {
-    formattedArtistData.push({
-      name: artist.artist_name,
-      uri: artist.artist_uri,
-      popularity: artist.popularity,
-      imageUrl: artist.image_url,
-      spotifyUrl: artist.spotify_url
-    });
-  });
-
-  console.log(formattedArtistData);
-
   
   for (const [key, value] of urlParams.entries()) {
       params[key] = value;
   }
-  return { params, formattedArtistData };
+  return params;
 }
 
 function Playlist() {
@@ -41,6 +22,7 @@ function Playlist() {
   console.log("energy: " + energy + "valence: " + valence)
   const [recommendations, setRecommendations] = useState([]);
   const [tracks, setTracks] = useState([]);
+  const [artists, setArtists] = useState([]);
 
   const handleMakeAnotherClick = () => {
     navigate('/mood'); // Adjust the route to your mood selection screen
@@ -67,6 +49,12 @@ function Playlist() {
   // Usage
   const queryParams = getQueryParams();
   const playlistId = queryParams.playlist_id;
+
+  useEffect(() => {
+    const artistData = JSON.parse(decodeURIComponent(queryParams.artist_data)); // Use queryParams to get artist data
+    const sortedArtists = artistData.sort((a, b) => b.popularity - a.popularity); // Sort by popularity
+    setArtists(sortedArtists); // Store sorted artists in state
+  }, [queryParams.artist_data]);
 
   useEffect(() => {
     if (playlistId) {
@@ -125,19 +113,13 @@ function Playlist() {
       <h2 className="featured-artists-title">Featured Artists in This Playlist</h2>
 
       <div className="boxes-container">
-        <div className="box">
-          <img src="https://via.placeholder.com/150" alt="Test Image 1" className="box-image" />
-          <h3 className="box-title">Test Title 1</h3>
-        </div>
-        <div className="box">
-          <img src="https://via.placeholder.com/150" alt="Test Image 2" className="box-image" />
-          <h3 className="box-title">Test Title 2</h3>
-        </div>
-        <div className="box">
-          <img src="https://via.placeholder.com/150" alt="Test Image 3" className="box-image" />
-          <h3 className="box-title">Test Title 3</h3>
-        </div>
-        {/* Add more boxes as needed */}
+        {artists.map(artist => (
+          <div className="box" key={artist.artist_uri}>
+            <img src={artist.image_url} alt={artist.artist_name} className="box-image" />
+            <h3 className="box-title">{artist.artist_name}</h3>
+            <p>Popularity: {artist.popularity}</p>
+          </div>
+        ))}
       </div>
 
       {/* Buttons Section */}
