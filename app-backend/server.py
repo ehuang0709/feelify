@@ -177,7 +177,7 @@ def callback():
         encoded_artist_data = urllib.parse.quote(json.dumps(artist_info))
 
         # Redirect to the frontend playlist page with playlist ID and artist information
-        return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}&energy={target_energy}&valence={target_valence}&artist_data={encoded_artist_data}')
+        return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}&artist_data={encoded_artist_data}')
     
     else:
         return redirect(f'https://feelify.netlify.app/?error=access_denied')
