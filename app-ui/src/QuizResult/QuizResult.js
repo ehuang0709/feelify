@@ -25,7 +25,7 @@ function QuizResult() {
         </div>
       </div>
 
-      <h3 style={{ marginTop: '20px', marginBottom: '10px' }}>
+      <h3 style={{ marginTop: '20px', marginBottom: '10px', fontSize: '24px' }}>
         Here is a playlist we think fits you:
       </h3>
 
@@ -42,8 +42,9 @@ function QuizResult() {
       <button 
         onClick={() => navigate('/mood')} 
         className="back-button"
+        aria-label="Go Back"
       >
-        Go Back to Feeling
+        ←
       </button>
     </div>
   );

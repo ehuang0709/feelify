@@ -13,12 +13,17 @@
   align-items: center;
   justify-content: center;
   height: 100vh;
-  padding: 30px;
+  padding: 20px;
   background-size: 300% 300%;
   animation: pulse 20s infinite;
   text-align: center;
-}
+  font-family: 'Babydoll';
 
+}
+.quiz-result-container h2{
+  font-size: 3rem;
+  margin-bottom: 7px;
+}
 
 .result-content {
   display: flex;
@@ -61,17 +66,22 @@
 
 .back-button {
   margin-top: 20px;
-  background-color: #4caf50;
+  background-color: #0d270e;
   color: white;
   border: none;
-  padding: 12px 24px;
-  border-radius: 25px;
+  padding: 10px 15px;
+  border-radius: 20px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: 1.5rem;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  position: fixed;
+  font-family: 'Babydoll';
+  top: 2%;
+  left: 2%;
 }
 
 .back-button:hover {
-  background-color: #45a049;
+  background-color: white;
   transform: scale(1.05);
+  color: black;
 }
