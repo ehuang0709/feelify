@@ -6,6 +6,7 @@ import base64
 import os
 import random
 import string
+import json
 
 app = Flask(__name__)
 app.secret_key = '51e718937f025e5ea3af64b1c45ad9aa943a622ef85fd6afd75d72b7225e7b06'
@@ -210,9 +211,18 @@ def callback():
 
         if add_tracks_response.status_code != 201:
             return redirect(f'https://feelify.netlify.app/?error=adding_tracks_failed')
+        
+        tracks_response = requests.get(f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks', headers=headers)
+        
+        if tracks_response.status_code != 200:
+            return redirect(f'https://feelify.netlify.app/?error=fetching_tracks_failed')
+
+        tracks_data = tracks_response.json()
+        # URL encode the tracks data
+        encoded_tracks_data = urllib.parse.quote(json.dumps(tracks_data))
 
         # Redirect to the frontend playlist page with playlist ID
-        return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}')
+        return redirect(f'`https://feelify.netlify.app/playlist?playlist_id={playlist_id}&tracks_data={encoded_tracks_data}`')
     
     else:
         return redirect(f'https://feelify.netlify.app/?error=access_denied')
