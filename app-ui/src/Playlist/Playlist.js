@@ -126,14 +126,19 @@ function Playlist() {
       <h2 className="featured-artists-title">Featured Artists in This Playlist</h2>
 
       <div className="boxes-container">
-        {artists.slice(0, 3).map(artist => (
-          <div className="box" key={artist.artist_uri}>
-            <img src={artist.image_url} alt={artist.artist_name} className="box-image" />
-            <h3 className="box-title">{artist.artist_name}</h3>
-            <p>Popularity: {artist.popularity}</p>
-          </div>
-        ))}
-      </div>
+      {artists.slice(0, 3).map(artist => (
+        <div className="box" key={artist.artist_uri}>
+          <a href={artist.spotify_url} target="_blank" rel="noopener noreferrer">
+            <img 
+              src={artist.image_url} 
+              alt={artist.artist_name} 
+              className="box-image" 
+            />
+          </a>
+          <h3 className="box-title">{artist.artist_name}</h3>
+        </div>
+      ))}
+    </div>
 
       {/* Buttons Section */}
       <div className="buttons-container">
