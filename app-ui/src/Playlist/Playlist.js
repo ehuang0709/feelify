@@ -4,6 +4,34 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './Playlist.css';
 
+function getQueryParams() {
+  const params = {};
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  
+  for (const [key, value] of urlParams.entries()) {
+      params[key] = value;
+  }
+  return params;
+}
+
+// function fetchPlaylistTracks(playlistId) {
+//   fetch(`https://your-backend-url/playlists/${playlistId}`)
+//       .then(response => {
+//           if (!response.ok) {
+//               throw new Error('Network response was not ok');
+//           }
+//           return response.json();
+//       })
+//       .then(data => {
+//           console.log('Tracks in playlist:', data);
+//           // Process the data as needed (e.g., display tracks)
+//       })
+//       .catch(error => {
+//           console.error('Error fetching playlist tracks:', error);
+//       });
+// }
+
 function Playlist() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -18,10 +46,20 @@ function Playlist() {
     window.open('https://open.spotify.com/playlist/YOUR_PLAYLIST_ID', '_blank');
   };
 
+  // Usage
+  const queryParams = getQueryParams();
+  const playlistId = queryParams.playlist_id;
+
+  if (playlistId) {
+  // Now you can use the playlistId in another function to fetch tracks
+    // fetchPlaylistTracks(playlistId);
+    console.log("playlist id: "+playlistId)
+  }
+
   useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const response = await fetch('https://the-repo.onrender.com/recommendations', {
+        const response = await fetch('http://the-repo.onrender.com/recommendations', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
