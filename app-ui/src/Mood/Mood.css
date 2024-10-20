@@ -86,8 +86,8 @@
   border: none; /* No border */
   width: 100px; /* Increased width for wide rectangle */
   height: 30px; /* Height to maintain rectangular shape */
-  font-size: .8rem; /* Adjusted font size */
-  font-family: 'Mortend-Bold', sans-serif; /* Custom bold font */
+  font-size: 1.2rem; /* Adjusted font size */
+  font-family: sans-serif; /* Custom bold font */
   border-radius: 10px; /* Rounded corners for a smooth look */
   cursor: pointer;
   margin-top: 10px;
