@@ -1,12 +1,9 @@
-@keyframes pastelGradient {
-  0% {
-      background: linear-gradient(120deg, rgba(255, 182, 193, 0.386), rgba(221, 160, 221, 0.399)); 
+@keyframes pulse {
+  0%, 100% {
+    background-color: #f4cbf4ec;
   }
   50% {
-      background: linear-gradient(240deg, rgba(221, 160, 221, 0.402), rgba(173, 216, 230, 0.575));
-  }
-  100% {
-      background: linear-gradient(360deg, rgba(173, 216, 230, 0.289), rgba(144, 238, 144, 0.361));
+    background-color: #cde8d8;
   }
 }
 
@@ -18,10 +15,11 @@
   height: 100vh;
   padding: 30px;
   background-size: 300% 300%;
-  animation: pastelGradient 12s ease infinite;
+  animation: pulse 20s infinite;
   border-radius: 16px;
   text-align: center;
 }
+
 
 .result-content {
   display: flex;
