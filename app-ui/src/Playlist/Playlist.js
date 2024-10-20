@@ -18,7 +18,7 @@ function getQueryParams() {
 function Playlist() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { energy, valence } = location.state || { energy: 0, valence: 0 };
+  const { energy, valence } = location.state || {};
   console.log("energy: " + energy + "valence: " + valence)
   const [recommendations, setRecommendations] = useState([]);
   const [tracks, setTracks] = useState([]);
