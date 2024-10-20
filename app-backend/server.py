@@ -167,7 +167,8 @@ def callback():
 
         target_energy = session.get('energy')
         target_valence = session.get('valence')
-
+        
+        
         # Fetch top artists
         headers = {
             'Authorization': f'Bearer {access_token}'
@@ -227,15 +228,13 @@ def callback():
             return redirect(f'https://feelify.netlify.app/?error=fetching_tracks_failed')
 
         tracksData = tracks_response.json()
-        track_info = [{
-            'name': track['track']['name'],
-            'uri': track['track']['uri'],
-            'artists': [artist['name'] for artist in track['track']['artists']],
-            'album': track['track']['album']['name']
-        } for track in tracksData['items']]
+        artist_info = [{
+            'artist_name': artist['name'],
+            'artist_uri': artist['uri']
+        } for track in tracksData['items'] for artist in track['track']['artists']]
 
         # URL encode the track info data
-        encoded_tracks_data = urllib.parse.quote(json.dumps(track_info))
+        encoded_tracks_data = urllib.parse.quote(json.dumps(artist_info))
 
         # Redirect to the frontend playlist page with playlist ID and track information
         return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}&tracks_data={encoded_tracks_data}')
