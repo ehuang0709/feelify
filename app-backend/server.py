@@ -238,6 +238,7 @@ def callback():
         encoded_tracks_data = urllib.parse.quote(json.dumps(track_info))
 
         # Redirect to the frontend playlist page with playlist ID and track information
+        return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}&energy={target_energy}&valence={target_valence}')
         return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}&tracks_data={encoded_tracks_data}')
     
     else:
