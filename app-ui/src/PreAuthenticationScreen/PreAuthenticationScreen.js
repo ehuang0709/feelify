@@ -20,14 +20,17 @@ function PreAuthenticationScreen() {
         credentials: 'include', 
       });
 
-      // if (response.ok) {
-      //   const data = await response.json();
-      //   if (data.authenticated) {
-      //     navigate('/playlist', { state: { energy, valence } });
-      //   } else {
-      window.location.href = `https://the-repo.onrender.com/login?energy=${energy}&valence=${valence}`;
-        // }
-      // }
+      if (response.ok) {
+        console.log("auth ok");
+        const data = await response.json();
+        if (data.authenticated) {
+          console.log("nav paly");
+          navigate('/playlist', { state: { energy, valence } });
+        } else {
+          console.log("nav login");
+          window.location.href = `https://the-repo.onrender.com/login?energy=${energy}&valence=${valence}`;
+        }
+      }
     };
 
     checkAuth();
