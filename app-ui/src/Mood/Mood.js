@@ -53,9 +53,9 @@ function Mood() {
 
     const xNorm = Math.min(Math.max((xPos - rect.left) / rect.width, 0), 1); 
     const yNorm = Math.min(Math.max((yPos - rect.top) / window.innerHeight, 0), 1);
-
-    setXNormValue(xNorm);
-    setYNormValue(yNorm);
+    
+    setXNormValue(Math.min(Math.max(xPos / window.innerWidth, 0), 1));
+    setYNormValue(Math.min(Math.max(yPos / window.innerHeight, 0), 1));
   
     const topLeft = { r: 173, g: 216, b: 230 };
     const topRight = { r: 244, g: 191, b: 127 };
@@ -106,7 +106,7 @@ function Mood() {
   const handlePlaylistButtonClick = () => {
     navigate('/pre-auth', {
       state: {
-        energy: yNormValue/0.6,
+        energy: yNormValue,
         valence: xNormValue
       }
     });
