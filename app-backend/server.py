@@ -1,9 +1,8 @@
-from flask import Flask, request, redirect, send_file, session, jsonify, make_response
+from flask import Flask, request, redirect, session, jsonify, make_response
 from flask_cors import CORS
 import requests
 import urllib.parse
 import base64
-import os
 import random
 import string
 import json
@@ -14,9 +13,6 @@ CORS(app, supports_credentials=True, resources={r"/*": {"origins": "https://feel
 
 CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
 CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
-# REDIRECT_URI = 'http://localhost:3000/callback'
-# REDIRECT_URI = 'https://the-repo.onrender.com/callback'
-#REDIRECT_URI = 'https://feelify.netlify.app/playlist'
 REDIRECT_URI = 'https://the-repo.onrender.com/callback'
 
 def generate_random_string(length):
@@ -63,77 +59,6 @@ def login():
     return redirect(auth_url)
 
 # SPOTIFY API CALLBACK
-# @app.route('/callback')
-# def callback():
-#     code = request.args.get('code')
-#     state = request.args.get('state')
-
-#     if not state:
-#         return redirect('/?' + urllib.parse.urlencode({'error': 'state_mismatch'}))
-
-#     auth_str = f"{CLIENT_ID}:{CLIENT_SECRET}"
-#     b64_auth_str = base64.b64encode(auth_str.encode()).decode()
-
-#     auth_options = {
-#         'url': 'https://accounts.spotify.com/api/token',
-#         'data': {
-#             'code': code,
-#             'redirect_uri': REDIRECT_URI,
-#             'grant_type': 'authorization_code'
-#         },
-#         'headers': {
-#             'Content-Type': 'application/x-www-form-urlencoded',
-#             'Authorization': f'Basic {b64_auth_str}'
-#         }
-#     }
-    
-#     response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
-#     token_data = response.json()
-#     access_token = token_data.get('access_token')
-
-#     if access_token:
-#         session['access_token'] = access_token
-#         # Redirect to the frontend playlist page
-#         return redirect('https://feelify.netlify.app/playlist')  
-#     else:
-#         return redirect('/?' + urllib.parse.urlencode({'error': 'access_denied'}))
-
-# ----------
-
-# @app.route('/callback')
-# def callback():
-#     code = request.args.get('code')
-#     state = request.args.get('state')
-
-#     # Exchange code for an access token
-#     auth_str = f"{CLIENT_ID}:{CLIENT_SECRET}"
-#     b64_auth_str = base64.b64encode(auth_str.encode()).decode()
-
-#     response = requests.post(
-#         'https://accounts.spotify.com/api/token',
-#         data={
-#             'grant_type': 'authorization_code',
-#             'code': code,
-#             'redirect_uri': REDIRECT_URI,
-#             'client_id': CLIENT_ID,
-#             'client_secret': CLIENT_SECRET
-#         },
-#         headers={
-#             'Authorization': f'Basic {b64_auth_str}',
-#             'Content-Type': 'application/x-www-form-urlencoded'
-#         }
-#     )
-
-#     # Handle response and save token in the session
-#     token_data = response.json()
-#     access_token = token_data.get('access_token')
-
-#     if access_token:
-#         session['access_token'] = access_token
-#         return redirect('https://feelify.netlify.app/playlist')  # Redirect to frontend
-#     else:
-#         return redirect(f'https://feelify.netlify.app/?error=access_denied')
-
 @app.route('/callback')
 def callback():
     code = request.args.get('code')
@@ -203,7 +128,6 @@ def callback():
         energy_percentage = int(float(target_energy) * 100)
         valence_percentage = int(float(target_valence) * 100)
         playlist_description = f'made by feelify with energy level {energy_percentage}% and valence level {valence_percentage}%'        
-        # playlist_description = f'made from feelify with energy level {target_energy} and valence level {target_valence}'
         playlist_data = {
             'name': playlist_name,
             'public': True,
@@ -445,74 +369,6 @@ def generate_recommendations():
 
     response_data = response.json()
     return jsonify(response_data), 200, response_headers
-
-# # CREATE PLAYLIST
-# @app.route('/create-playlist', methods=['POST'])
-# def create_playlist():
-#     access_token = session.get('access_token')
-#     if not access_token:
-#         return redirect('/login')
-
-#     # Get recommended tracks
-#     recommended_songs = request.json.get('recommended_songs', [])
-#     track_uris = []
-
-#     for song in recommended_songs:
-#         song_name = song.get('name')
-#         artist_name = song.get('artist')
-
-#         search_url = 'https://api.spotify.com/v1/search'
-#         query = f"track:{song_name} artist:{artist_name}"
-#         params = {
-#             'q': query,
-#             'type': 'track',
-#             'limit': 1
-#         }
-
-#         headers = {
-#             'Authorization': f'Bearer {access_token}'
-#         }
-
-#         search_response = requests.get(search_url, headers=headers, params=params)
-
-#         if search_response.status_code == 200:
-#             search_results = search_response.json()
-#             tracks = search_results.get('tracks', {}).get('items', [])
-#             if tracks:
-#                 track_uri = tracks[0]['uri']
-#                 track_uris.append(track_uri)
-
-#     # Create a new playlist
-#     headers = {
-#         'Authorization': f'Bearer {access_token}',
-#         'Content-Type': 'application/json'
-#     }
-
-#     create_playlist_url = 'https://api.spotify.com/v1/me/playlists'
-#     playlist_name = "feelify playlist"
-#     save_playlist = request.json.get('save_playlist', False)
-#     playlist_data = {
-#         'name': playlist_name,
-#         'public': save_playlist,
-#         'description': 'Generated playlist from recommendations'
-#     }
-
-    
-#     response = requests.post(create_playlist_url, headers=headers, json=playlist_data)
-
-#     # Add tracks to the new playlist 
-#     if response.status_code == 201:
-#         playlist_id = response.json()['id']
-#         if track_uris:
-#             add_tracks_url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
-#             add_tracks_data = {
-#                 'uris': track_uris
-#             }
-#             requests.post(add_tracks_url, headers=headers, json=add_tracks_data)
-
-#         return jsonify({'message': 'Playlist created successfully', 'playlist_id': playlist_id})
-#     else:
-#         return jsonify({'error': 'Error creating playlist', 'details': response.json()}), response.status_code
 
 # CREATE PLAYLIST
 @app.route('/create-playlist')
