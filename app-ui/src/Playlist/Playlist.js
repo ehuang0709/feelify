@@ -11,6 +11,8 @@ function getQueryParams() {
 
   const artistData = JSON.parse(decodeURIComponent(urlParams.get('artist_data')));
 
+  artistData.sort((a, b) => b.popularity - a.popularity);
+
   artistData.forEach(artist => {
     console.log(`Artist Name: ${artist.artist_name}`);
     console.log(`Artist URI: ${artist.artist_uri}`);
