@@ -47,10 +47,6 @@ function Playlist() {
   // Usage
   const queryParams = getQueryParams();
   const playlistId = queryParams.playlist_id;
-  const tracksData = queryParams.tracks_data;
-
-  const trackInfo = JSON.parse(decodeURIComponent(tracksData));
-  console.log(trackInfo);
 
   useEffect(() => {
     if (playlistId) {
