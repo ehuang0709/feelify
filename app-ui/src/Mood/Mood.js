@@ -125,8 +125,9 @@ function Mood() {
       <div className="text-container">
         <h1>HOW ARE YOU FEELING TODAY?</h1>
         <h3>DRAG THE PLAY ICON TO WHERE YOU RESONATE</h3>
+        <p className="spontaneous-quiz-text">Feeling spontaneous? Take this quiz</p>
         <button onClick={handleStartQuiz} className="start-quiz-button">
-        Random
+        Start
         </button>
 
       </div>
