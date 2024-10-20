@@ -44,8 +44,8 @@ def check_auth():
 @app.route('/login')
 def login():
     state = generate_random_string(16)
-    energy = request.args.get('energy', 0.7)
-    valence = request.args.get('valence', 0.7)
+    energy = request.args.get('energy')
+    valence = request.args.get('valence')
 
     session['energy'] = energy
     session['valence'] = valence
