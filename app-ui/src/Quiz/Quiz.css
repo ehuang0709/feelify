@@ -12,11 +12,18 @@
     text-align: center;
 }
 
+@font-face {
+  font-family: 'Babydoll';
+  src: url('Baby\ Doll.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
   .quiz-question h3 {
-    font-size: 1.5rem;
-    font-weight: 500;
+    font-size: 1.8rem;
+    font-weight: bold;
     margin-bottom: 20px;
-    font-family: 'Mortend-Bold', sans-serif; /* Custom bold font */
+    font-family: 'Babydoll', sans-serif; /* Custom bold font */
     color: #333;
     line-height: 1.4;
   }
@@ -35,6 +42,7 @@
     font-weight: 500;
     color: #333;
     transition: all 0.3s ease;
+    font-family: 'Mortend-Bold'
   }
   
   .quiz-option-button:hover {
