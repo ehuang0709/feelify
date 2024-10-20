@@ -15,28 +15,12 @@ function getQueryParams() {
   return params;
 }
 
-// function fetchPlaylistTracks(playlistId) {
-//   fetch(`https://your-backend-url/playlists/${playlistId}`)
-//       .then(response => {
-//           if (!response.ok) {
-//               throw new Error('Network response was not ok');
-//           }
-//           return response.json();
-//       })
-//       .then(data => {
-//           console.log('Tracks in playlist:', data);
-//           // Process the data as needed (e.g., display tracks)
-//       })
-//       .catch(error => {
-//           console.error('Error fetching playlist tracks:', error);
-//       });
-// }
-
 function Playlist() {
   const location = useLocation();
   const navigate = useNavigate();
   const { energy, valence } = location.state || { energy: 0, valence: 0 };
   const [recommendations, setRecommendations] = useState([]);
+  const [tracks, setTracks] = useState([]);
 
   const handleMakeAnotherClick = () => {
     navigate('/mood'); // Adjust the route to your mood selection screen
@@ -57,9 +41,29 @@ function Playlist() {
   }
 
   useEffect(() => {
+    if (playlistId) {
+      fetchPlaylistTracks(playlistId);
+    }
+  }, [playlistId]);
+
+  const fetchPlaylistTracks = async (playlistId) => {
+    try {
+      const response = await fetch(`https://the-repo.onrender.com/playlists/${playlistId}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      console.log('Tracks in playlist:', data);
+      setTracks(data.items || []); // Assuming your backend returns tracks in data.items
+    } catch (error) {
+      console.error('Error fetching playlist tracks:', error);
+    }
+  };
+
+  useEffect(() => {
     const fetchRecommendations = async () => {
       try {
-        const response = await fetch('http://the-repo.onrender.com/recommendations', {
+        const response = await fetch('https://the-repo.onrender.com/recommendations', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
