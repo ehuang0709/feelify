@@ -36,10 +36,11 @@
   }
   
   .box-image {
-    width: 100%;
-    height: auto;
+    width: 150px;
+    height: 150px;
     object-fit: cover;
     border-radius: 8px;
+    overflow: hidden;
   }
   
   .box-title {
