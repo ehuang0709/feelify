@@ -165,8 +165,8 @@ def callback():
     if access_token:
         session['access_token'] = access_token
 
-        target_energy = session.get('energy', 0.7)
-        target_valence = session.get('valence', 0.7)
+        target_energy = session.get('energy')
+        target_valence = session.get('valence')
 
         # Fetch top artists
         headers = {
@@ -187,7 +187,7 @@ def callback():
         recommendations_response = requests.get('https://api.spotify.com/v1/recommendations', headers=headers, params={
             'seed_artists': ','.join(seed_artists),
             'limit': 20,
-            'target_energy': target_energy,  # Replace with desired values or fetch from your frontend
+            'target_energy': target_energy,  
             'target_valence': target_valence
         })
 
