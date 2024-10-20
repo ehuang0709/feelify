@@ -106,7 +106,7 @@ function Mood() {
   const handlePlaylistButtonClick = () => {
     navigate('/pre-auth', {
       state: {
-        energy: yNormValue/0.6,
+        energy: yNormValue,
         valence: xNormValue
       }
     });
