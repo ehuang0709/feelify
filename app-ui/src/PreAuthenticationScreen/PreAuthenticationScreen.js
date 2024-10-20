@@ -14,7 +14,9 @@ function PreAuthenticationScreen() {
 
   useEffect(() => {
     const checkAuth = async () => {
-      const response = await fetch('https://the-repo.onrender.com/login');
+      const response = await fetch('https://the-repo.onrender.com/login', {
+        mode: "no-cors"
+      });
       if (response.ok) {
         // If the user is authenticated, navigate to the playlist component
         navigate('/playlist', { state: { energy, valence } });
