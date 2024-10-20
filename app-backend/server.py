@@ -200,9 +200,10 @@ def callback():
         # Create a playlist with recommended songs
         create_playlist_url = 'https://api.spotify.com/v1/me/playlists'
         playlist_name = "feelify playlist"
-        energy_percentage = int(target_energy * 100)
-        valence_percentage = int(target_valence * 100)
-        playlist_description = f'made from feelify with energy level {energy_percentage}% and valence level {valence_percentage}%'        
+        # energy_percentage = int(target_energy * 100)
+        # valence_percentage = int(target_valence * 100)
+        # playlist_description = f'made from feelify with energy level {energy_percentage}% and valence level {valence_percentage}%'        
+        playlist_description = f'made from feelify with energy level {target_energy} and valence level {target_valence}'
         playlist_data = {
             'name': playlist_name,
             'public': True,
