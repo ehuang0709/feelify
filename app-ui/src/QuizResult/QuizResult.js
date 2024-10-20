@@ -19,8 +19,8 @@ function QuizResult() {
       />
       <p>{result.description}</p>
 
-      <div className="inspiration-container">
-        <p><strong>Woman of Inspiration:</strong> {result.inspiringWoman}</p>
+    <div className="inspiration-container">
+        <p><strong>Advice:</strong> {result.advice}</p>
       </div>
 
       <h3 style={{ marginTop: '20px', marginBottom: '10px' }}>
@@ -36,15 +36,6 @@ function QuizResult() {
         allowTransparency="true"
         allow="encrypted-media"
       ></iframe>
-
-      <div className="artist-recommendation" style={{ marginTop: '30px' }}>
-        <h3>You should listen to: {result.artist.name}</h3>
-        <img 
-          src={result.artist.image} 
-          alt={result.artist.name} 
-          style={{ width: '150px', borderRadius: '8px' }} 
-        />
-      </div>
 
       <button 
         onClick={() => navigate('/mood')} 
@@ -63,117 +54,76 @@ export const getResultFromAnswers = (answers) => {
   const index = sum % resultData.length;
   return resultData[index];
 };
-
 export const resultData = [
     {
       result: 'Adventurer',
-      image: 'adventurer.webp',
-      description: 'Adventure flows through your veins.',
-      inspiringWoman: 'Amelia Earhart, the first female aviator to fly solo across the Atlantic Ocean, who broke barriers in aviation and inspired generations of adventurers.',
+      description: 'Adventure flows through your veins, igniting a passion for exploration and risk-taking. You love challenging the status quo, exploring the unknown, and embracing life with curiosity and courage.',
+      advice: 'Embrace new challenges, but remember to pause and reflect on the journey. Balance excitement with preparation, and don’t hesitate to seek help when needed. Stay open to unexpected paths—they often lead to the most memorable experiences.',
       playlist: 'https://open.spotify.com/embed/playlist/3xrbwOJGdSFy9X05euzlpa',
-      artist: {
-        name: 'Florence Welch',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Florence_Welch.jpg/800px-Florence_Welch.jpg',
-      },
+      image: 'adventurer.webp',
     },
     {
       result: 'Dreamer',
-      image: 'dreamer.webp',
-      description: 'You live in your own world of creativity and wonder.',
-      inspiringWoman: 'Dolores Huerta, a civil rights activist and labor leader, who co-founded the United Farm Workers and fought tirelessly for social justice and workers’ rights.',
+      description: 'You live in your world of creativity and wonder, always imagining possibilities beyond the present. You embrace dreams as a tool for personal growth and social change.',
+      advice: 'Make time to ground your ideas into reality. Use practical steps to transform your dreams into tangible actions. Surround yourself with people who support your creativity, and don’t fear sharing your vision with the world.',
       playlist: 'https://open.spotify.com/embed/playlist/37i9dQZF1DWSiZVO2J6WeI',
-      artist: {
-        name: 'Lorde',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Lorde_Roskilde_Festival_2017.jpg/800px-Lorde_Roskilde_Festival_2017.jpg',
-      },
+      image: 'dreamer.webp',
     },
     {
       result: 'Explorer',
-      image: 'explorer.webp',
-      description: 'You love exploring the unknown and embracing new experiences.',
-      inspiringWoman: 'Jane Goodall, a pioneering primatologist and conservationist, who redefined humanity’s understanding of chimpanzees and dedicated her life to environmental activism.',
+      description: 'You love discovering the unknown and embarking on new experiences. Your inquisitive nature pushes you to learn and expand your horizons.',
+      advice: 'Explore with both curiosity and mindfulness. While diving into new places and ideas, take time to appreciate the present moment. Document your discoveries and share your experiences with others—they may spark someone else’s adventure.',
       playlist: 'https://open.spotify.com/embed/playlist/3ecmVHxXUkDcI90rBup8oT',
-      artist: {
-        name: 'Bjork',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Bjork_-_Hurricane_Festival.jpg/800px-Bjork_-_Hurricane_Festival.jpg',
-      },
+      image: 'explorer.webp',
     },
     {
       result: 'Romantic',
-      image: 'romantic.webp',
-      description: 'You are guided by your heart and love deeply.',
-      inspiringWoman: 'Frida Kahlo, a celebrated Mexican artist known for her vivid self-portraits and surrealist style, whose art explored themes of love, pain, and identity.',
+      description: 'Guided by emotion, you experience life deeply. Love and connection are central to your values, and you find beauty in vulnerability.',
+      advice: 'Embrace vulnerability, but maintain a sense of self-identity. Remember that love takes many forms, and nurturing your relationships is just as important as loving yourself. Celebrate the beauty in everyday moments.',
       playlist: 'https://open.spotify.com/embed/playlist/37i9dQZF1DX7rOY2tZUw1k',
-      artist: {
-        name: 'Adele',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Adele_2016.jpg/800px-Adele_2016.jpg',
-      },
+      image: 'romantic.webp',
     },
     {
       result: 'Visionary',
-      image: 'visionary.webp',
-      description: 'You have bold ideas and inspire others to see the world differently.',
-      inspiringWoman: 'Ada Lovelace, the first computer programmer, who envisioned how machines could perform tasks beyond arithmetic, laying the foundation for modern computing.',
+      description: 'You have a knack for bold ideas and inspire others to see the world from new perspectives. Vision drives your actions, and you lead change.',
+      advice: 'Focus on turning your ideas into action. Collaboration is key—invite others into your vision and be open to feedback. Don’t let setbacks discourage you; even small progress can have a lasting impact.',
       playlist: 'https://open.spotify.com/embed/playlist/4r5uW1tgqNv5Rp6CPH4pcN',
-      artist: {
-        name: 'Grimes',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Grimes_2012.jpg/800px-Grimes_2012.jpg',
-      },
+      image: 'visionary.webp',
     },
     {
       result: 'Night Owl',
-      image: 'nightowl.webp',
-      description: 'The night inspires your best ideas.',
-      inspiringWoman: 'Maya Angelou, a poet, memoirist, and civil rights activist, who often found creative inspiration in the quiet hours of the night.',
+      description: 'Your best ideas and inspirations come alive at night, when creativity flourishes in quiet moments.',
+      advice: 'Embrace your unique rhythm, but ensure you get rest when needed. Use nighttime creativity to your advantage by creating routines that let ideas flow. Consider balancing solo creative moments with social connection during the day.',
       playlist: 'https://open.spotify.com/embed/playlist/37i9dQZF1DXdQvOLqzNHSW',
-      artist: {
-        name: 'FKA Twigs',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/FKA_twigs_-_Ritual_Union_2014.jpg/800px-FKA_twigs_-_Ritual_Union_2014.jpg',
-      },
+      image: 'nightowl.webp',
     },
     {
       result: 'Sun Chaser',
-      image: 'sunchaser.webp',
-      description: 'You are drawn to light and positivity.',
-      inspiringWoman: 'Greta Thunberg, a young climate activist who has mobilized millions around the world to demand action on climate change.',
+      description: 'You are drawn to positivity, light, and joy. Optimism is your guide, and you inspire others to chase their happiness.',
+      advice: 'Spread positivity, but allow yourself to experience all emotions fully. Even during difficult times, your optimism can uplift others. Take time for self-care to keep your light shining bright.',
       playlist: 'https://open.spotify.com/embed/playlist/1M4HRuhHptR24Ocs3HRfvO',
-      artist: {
-        name: 'Maggie Rogers',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Maggie_Rogers_2019.jpg/800px-Maggie_Rogers_2019.jpg',
-      },
+      image: 'sunchaser.webp',
     },
     {
       result: 'Perfectionist',
-      image: 'perfectionist.webp',
-      description: 'You strive to be the best in everything you do.',
-      inspiringWoman: 'Serena Williams, one of the greatest tennis players of all time, whose pursuit of excellence redefined the world of sports.',
+      description: 'You are determined to excel in everything you do, holding yourself to the highest standards.',
+      advice: 'Pursue excellence without sacrificing well-being. It’s okay to accept imperfection in some areas. Set realistic goals and celebrate small victories along the way. Don’t be too hard on yourself—rest is a part of the process.',
       playlist: 'https://open.spotify.com/embed/playlist/2s8Bn8OGyJLjcpYEkxFfWF',
-      artist: {
-        name: 'Beyoncé',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Beyonce_-_The_Formaiton_World_Tour_-_2016.jpg/800px-Beyonce_-_The_Formaiton_World_Tour_-_2016.jpg',
-      },
+      image: 'perfectionist.webp',
     },
     {
       result: 'Free Spirit',
-      image: 'freespirit.webp',
-      description: 'You follow your heart wherever it leads.',
-      inspiringWoman: 'Zelda Fitzgerald, a writer and socialite of the Jazz Age, known for her creative talents and struggles against societal expectations.',
+      description: 'You follow your heart wherever it leads, living life on your own terms. Freedom and authenticity are your guiding principles.',
+      advice: 'Follow your heart while also cultivating consistency. It’s okay to change course, but try to create routines that help you stay grounded. Surround yourself with people who encourage your freedom, and be kind to those who think differently.',
       playlist: 'https://open.spotify.com/embed/playlist/1ZvrtlXiYPmHalJWmj8VtC',
-      artist: {
-        name: 'Lana Del Rey',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Lana_Del_Rey_%40_SXSW_2019.jpg/800px-Lana_Del_Rey_%40_SXSW_2019.jpg',
-      },
+      image: 'freespirit.webp',
     },
     {
       result: 'Thinker',
-      image: 'thinker.webp',
-      description: 'You love pondering deep questions and solving problems.',
-      inspiringWoman: 'Marie Curie, the first woman to win two Nobel Prizes, whose discoveries in radioactivity changed science forever.',
+      description: 'Your mind is always working, seeking answers to life’s deep questions. You thrive on intellectual pursuits and problem-solving.',
+      advice: 'Use your curiosity to solve practical challenges as well. Balance reflection with action, and don’t hesitate to seek perspectives outside your own. Share your insights with others—they may benefit from your thoughtful approach.',
       playlist: 'https://open.spotify.com/embed/playlist/0Ver1JN2EzqOOsTP4ovQdA',
-      artist: {
-        name: 'St. Vincent',
-        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/St._Vincent_2018.jpg/800px-St._Vincent_2018.jpg',
-      },
+      image: 'thinker.webp',
     },
   ];
   
