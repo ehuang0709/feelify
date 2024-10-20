@@ -23,7 +23,7 @@ function PreAuthenticationScreen() {
         if (data.authenticated) {
           navigate('/playlist', { state: { energy, valence } });
         } else {
-          window.location.href = 'https://the-repo.onrender.com/login';
+          window.location.href = `https://the-repo.onrender.com/login?energy=${energy}&valence=${valence}`;
         }
       }
     };

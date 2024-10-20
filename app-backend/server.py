@@ -44,6 +44,12 @@ def check_auth():
 @app.route('/login')
 def login():
     state = generate_random_string(16)
+    energy = request.args.get('energy', 0.7)
+    valence = request.args.get('valence', 0.7)
+
+    session['energy'] = energy
+    session['valence'] = valence
+
     scope = 'user-read-private user-read-email playlist-read-private playlist-read-collaborative playlist-modify-public user-follow-read user-top-read user-read-recently-played user-library-read'
     
     query_params = {
@@ -159,6 +165,9 @@ def callback():
     if access_token:
         session['access_token'] = access_token
 
+        target_energy = session.get('energy', 0.7)
+        target_valence = session.get('valence', 0.7)
+
         # Fetch top artists
         headers = {
             'Authorization': f'Bearer {access_token}'
@@ -178,8 +187,8 @@ def callback():
         recommendations_response = requests.get('https://api.spotify.com/v1/recommendations', headers=headers, params={
             'seed_artists': ','.join(seed_artists),
             'limit': 20,
-            'target_energy': 0.7,  # Replace with desired values or fetch from your frontend
-            'target_valence': 0.7
+            'target_energy': target_energy,  # Replace with desired values or fetch from your frontend
+            'target_valence': target_valence
         })
 
         if recommendations_response.status_code != 200:
