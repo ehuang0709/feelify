@@ -258,10 +258,17 @@ def generate_recommendations():
 
     response = requests.get('https://api.spotify.com/v1/recommendations', headers=headers, params=params)
 
+    response_headers = {
+        'Access-Control-Allow-Origin': 'https://feelify.netlify.app',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization'
+    }
+
     if response.status_code != 200:
         return f"<pre>Error fetching recommendations: {response.status_code}, {response.text}</pre>"
 
-    return response.json()
+    response_data = response.json()
+    return jsonify(response_data), 200, response_headers
 
 # # CREATE PLAYLIST
 # @app.route('/create-playlist', methods=['POST'])
