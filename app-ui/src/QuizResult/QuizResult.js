@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './QuizResult.css'; // Import the CSS for styling
+import './QuizResult.css';
 
 function QuizResult() {
   const location = useLocation();
@@ -12,15 +12,17 @@ function QuizResult() {
   return (
     <div className="quiz-result-container">
       <h2>You are a {result.result}!</h2>
-      <img 
-        src={result.image} 
-        alt={result.result} 
-        style={{ width: '200px', borderRadius: '8px' }} 
-      />
-      <p>{result.description}</p>
 
-    <div className="inspiration-container">
-        <p><strong>Advice:</strong> {result.advice}</p>
+      <div className="result-content">
+        <img src={result.image} alt={result.result} />
+
+        <div className="result-box">
+          <p>{result.description}</p>
+
+          <div className="inspiration-container">
+            <p><strong>Advice:</strong> {result.advice}</p>
+          </div>
+        </div>
       </div>
 
       <h3 style={{ marginTop: '20px', marginBottom: '10px' }}>
@@ -54,6 +56,7 @@ export const getResultFromAnswers = (answers) => {
   const index = sum % resultData.length;
   return resultData[index];
 };
+
 export const resultData = [
     {
       result: 'Adventurer',
