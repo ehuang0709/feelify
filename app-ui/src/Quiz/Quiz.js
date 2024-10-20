@@ -48,33 +48,35 @@ const questions = [
     },
 
 ];
-
 function Quiz() {
     const [currentQuestion, setCurrentQuestion] = useState(0);
-    const [answers, setAnswers] = useState([]); // Store chosen indexes
+    const [answers, setAnswers] = useState([]);
     const navigate = useNavigate();
 
     const handleOptionClick = (index) => {
-        const newAnswers = [...answers, index]; // Store the latest answer
+        const newAnswers = [...answers, index];
 
-        // If it's the last question, navigate to QuizResult
         if (currentQuestion + 1 === questions.length) {
             navigate('/quiz-result', { state: { answers: newAnswers } });
         } else {
-            // Otherwise, move to the next question
             setAnswers(newAnswers);
             setCurrentQuestion(currentQuestion + 1);
         }
     };
 
+    const progress = ((currentQuestion) / questions.length) * 100;
+
     return (
         <div className="quiz-container">
             <div className="quiz-question">
+            <div className="progress-bar-container">
+                <div className="progress-bar" style={{ width: `${progress}%` }}></div>
+            </div>
                 <h3>{questions[currentQuestion].question}</h3>
                 {questions[currentQuestion].options.map((option, index) => (
                     <button
                         key={index}
-                        onClick={() => handleOptionClick(index)} // Pass the chosen index
+                        onClick={() => handleOptionClick(index)}
                         className="quiz-option-button"
                     >
                         {option}
