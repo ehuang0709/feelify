@@ -51,9 +51,22 @@ function Playlist() {
   const playlistId = queryParams.playlist_id;
 
   useEffect(() => {
-    const artistData = JSON.parse(decodeURIComponent(queryParams.artist_data)); // Use queryParams to get artist data
-    const sortedArtists = artistData.sort((a, b) => b.popularity - a.popularity); // Sort by popularity
-    setArtists(sortedArtists); // Store sorted artists in state
+    const artistData = JSON.parse(decodeURIComponent(queryParams.artist_data));
+    
+    // Use a Set to store unique artists based on artist_uri
+    const uniqueArtists = new Set();
+
+    artistData.forEach(artist => {
+      uniqueArtists.add(JSON.stringify(artist)); // Convert artist object to string
+    });
+
+    // Convert the Set back to an array
+    const artistsArray = Array.from(uniqueArtists).map(artist => JSON.parse(artist));
+    
+    // Sort the unique artists by popularity
+    const sortedArtists = artistsArray.sort((a, b) => b.popularity - a.popularity);
+
+    setArtists(sortedArtists);
   }, [queryParams.artist_data]);
 
   useEffect(() => {
@@ -113,7 +126,7 @@ function Playlist() {
       <h2 className="featured-artists-title">Featured Artists in This Playlist</h2>
 
       <div className="boxes-container">
-        {artists.map(artist => (
+        {artists.slice(0, 3).map(artist => (
           <div className="box" key={artist.artist_uri}>
             <img src={artist.image_url} alt={artist.artist_name} className="box-image" />
             <h3 className="box-title">{artist.artist_name}</h3>
