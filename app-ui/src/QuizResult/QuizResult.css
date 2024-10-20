@@ -1,4 +1,16 @@
-.quiz-container {
+@keyframes pastelGradient {
+    0% {
+      background: linear-gradient(120deg, rgba(255, 182, 193, 0.386), rgba(221, 160, 221, 0.399)); /* Pink to Purple */
+    }
+    50% {
+      background: linear-gradient(240deg, rgba(221, 160, 221, 0.402), rgba(173, 216, 230, 0.575)); /* Purple to Blue */
+    }
+    100% {
+      background: linear-gradient(360deg, rgba(173, 216, 230, 0.289), rgba(144, 238, 144, 0.361)); /* Blue to Lime */
+    }
+  }
+  /* TODO FIX PASTEL GRADIENT  */
+.quiz-result-container {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -6,21 +18,26 @@
     height: 100vh;
     padding: 20px;
     background-color: #faf8f6;
-    border-radius: 16px;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
     text-align: center;
-  }
-  
-  .quiz-container img {
+
+    background-size: 300% 300%; 
+    animation: pastelGradient 12s ease infinite; /* Slower, smoother animation */
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quiz-result-container img {
     margin: 15px 0;
-  }
-  
-  .quiz-container iframe {
+}
+
+.quiz-result-container iframe {
     margin-top: 20px;
-  }
-  
-  .back-button {
-    margin-top: 30px; /* Adds space between the button and the other elements */
+}
+
+.back-button {
+    margin-top: 20px;
     background-color: #4caf50;
     color: white;
     border: none;
@@ -29,9 +46,10 @@
     cursor: pointer;
     font-size: 1rem;
     transition: background-color 0.3s ease, transform 0.2s ease;
-  }
-  
-  .back-button:hover {
+}
+
+.back-button:hover {
     background-color: #45a049;
-    transform: scale(1.05); /* Slight zoom effect */
-  }
+    transform: scale(1.05);
+    /* Slight zoom effect */
+}
