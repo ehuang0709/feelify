@@ -93,7 +93,7 @@ function Playlist() {
       <div className="embedded-playlist">
         {/* Replace the src URL with your actual playlist embed link */}
         <iframe
-          src="https://open.spotify.com/embed/playlist/YOUR_PLAYLIST_ID"
+          src={`https://open.spotify.com/embed/playlist/${playlistId}`}
           width="100%"
           height="380"
           frameBorder="0"
