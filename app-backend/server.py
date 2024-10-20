@@ -82,6 +82,43 @@ def login():
 #         return redirect('https://feelify.netlify.app/playlist')  
 #     else:
 #         return redirect('/?' + urllib.parse.urlencode({'error': 'access_denied'}))
+
+# ----------
+
+# @app.route('/callback')
+# def callback():
+#     code = request.args.get('code')
+#     state = request.args.get('state')
+
+#     # Exchange code for an access token
+#     auth_str = f"{CLIENT_ID}:{CLIENT_SECRET}"
+#     b64_auth_str = base64.b64encode(auth_str.encode()).decode()
+
+#     response = requests.post(
+#         'https://accounts.spotify.com/api/token',
+#         data={
+#             'grant_type': 'authorization_code',
+#             'code': code,
+#             'redirect_uri': REDIRECT_URI,
+#             'client_id': CLIENT_ID,
+#             'client_secret': CLIENT_SECRET
+#         },
+#         headers={
+#             'Authorization': f'Basic {b64_auth_str}',
+#             'Content-Type': 'application/x-www-form-urlencoded'
+#         }
+#     )
+
+#     # Handle response and save token in the session
+#     token_data = response.json()
+#     access_token = token_data.get('access_token')
+
+#     if access_token:
+#         session['access_token'] = access_token
+#         return redirect('https://feelify.netlify.app/playlist')  # Redirect to frontend
+#     else:
+#         return redirect(f'https://feelify.netlify.app/?error=access_denied')
+
 @app.route('/callback')
 def callback():
     code = request.args.get('code')
@@ -112,10 +149,65 @@ def callback():
 
     if access_token:
         session['access_token'] = access_token
-        return redirect('https://feelify.netlify.app/playlist')  # Redirect to frontend
+
+        # Fetch top artists
+        headers = {
+            'Authorization': f'Bearer {access_token}'
+        }
+        top_artists_response = requests.get('https://api.spotify.com/v1/me/top/artists', headers=headers, params={
+            'time_range': 'medium_term',
+            'limit': 5
+        })
+
+        if top_artists_response.status_code != 200:
+            return redirect(f'https://feelify.netlify.app/?error=access_denied')
+
+        top_artists_data = top_artists_response.json()
+        seed_artists = [artist['id'] for artist in top_artists_data['items']]
+
+        # Generate recommendations
+        recommendations_response = requests.get('https://api.spotify.com/v1/recommendations', headers=headers, params={
+            'seed_artists': ','.join(seed_artists),
+            'limit': 20,
+            'target_energy': 0.7,  # Replace with desired values or fetch from your frontend
+            'target_valence': 0.7
+        })
+
+        if recommendations_response.status_code != 200:
+            return redirect(f'https://feelify.netlify.app/?error=recommendation_failed')
+
+        recommendations_data = recommendations_response.json()
+        track_uris = [track['uri'] for track in recommendations_data.get('tracks', [])]
+
+        # Create a playlist with recommended songs
+        create_playlist_url = 'https://api.spotify.com/v1/me/playlists'
+        playlist_name = "feelify playlist"
+        playlist_data = {
+            'name': playlist_name,
+            'public': True,  # Or set based on user preference
+            'description': 'Generated playlist from recommendations'
+        }
+
+        create_response = requests.post(create_playlist_url, headers=headers, json=playlist_data)
+
+        if create_response.status_code != 201:
+            return redirect(f'https://feelify.netlify.app/?error=playlist_creation_failed')
+
+        created_playlist = create_response.json()
+        playlist_id = created_playlist['id']
+
+        # Add tracks to the created playlist
+        add_tracks_url = f'https://api.spotify.com/v1/playlists/{playlist_id}/tracks'
+        add_tracks_response = requests.post(add_tracks_url, headers=headers, json={'uris': track_uris})
+
+        if add_tracks_response.status_code != 201:
+            return redirect(f'https://feelify.netlify.app/?error=adding_tracks_failed')
+
+        # Redirect to the frontend playlist page with playlist ID
+        return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}')
+    
     else:
         return redirect(f'https://feelify.netlify.app/?error=access_denied')
-
 
 # GET USER RECENTLY PLAYED
 @app.route('/recently-played')
