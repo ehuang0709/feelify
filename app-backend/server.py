@@ -168,7 +168,6 @@ def callback():
         target_energy = session.get('energy')
         target_valence = session.get('valence')
         
-        
         # Fetch top artists
         headers = {
             'Authorization': f'Bearer {access_token}'
@@ -203,7 +202,7 @@ def callback():
         playlist_name = "feelify playlist"
         playlist_data = {
             'name': playlist_name,
-            'public': True,  # Or set based on user preference
+            'public': True,
             'description': 'Generated playlist from recommendations'
         }
 
@@ -228,16 +227,29 @@ def callback():
             return redirect(f'https://feelify.netlify.app/?error=fetching_tracks_failed')
 
         tracksData = tracks_response.json()
-        artist_info = [{
-            'artist_name': artist['name'],
-            'artist_uri': artist['uri']
-        } for track in tracksData['items'] for artist in track['track']['artists']]
+        artist_info = []
 
-        # URL encode the track info data
-        encoded_tracks_data = urllib.parse.quote(json.dumps(artist_info))
+        # Collect detailed artist information using the Get Artist endpoint
+        for track in tracksData['items']:
+            for artist in track['track']['artists']:
+                artist_id = artist['id']
+                artist_response = requests.get(f'https://api.spotify.com/v1/artists/{artist_id}', headers=headers)
+                
+                if artist_response.status_code == 200:
+                    artist_data = artist_response.json()
+                    artist_info.append({
+                        'artist_name': artist_data['name'],
+                        'artist_uri': artist_data['uri'],
+                        'popularity': artist_data['popularity'],
+                        'image_url': artist_data['images'][0]['url'] if artist_data['images'] else '',
+                        'spotify_url': artist_data['external_urls']['spotify']
+                    })
 
-        # Redirect to the frontend playlist page with playlist ID and track information
-        return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}&energy={target_energy}&valence={target_valence}&tracks_data={encoded_tracks_data}')
+        # URL encode the artist info data
+        encoded_artist_data = urllib.parse.quote(json.dumps(artist_info))
+
+        # Redirect to the frontend playlist page with playlist ID and artist information
+        return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}&energy={target_energy}&valence={target_valence}&artist_data={encoded_artist_data}')
     
     else:
         return redirect(f'https://feelify.netlify.app/?error=access_denied')
