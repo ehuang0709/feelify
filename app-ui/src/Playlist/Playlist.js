@@ -48,11 +48,15 @@ function Playlist() {
 
   const fetchPlaylistTracks = async (playlistId) => {
     try {
+      console.log("here1");
       const response = await fetch(`https://the-repo.onrender.com/playlists/${playlistId}`);
+      console.log("here2");
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
+      console.log("here3");
       const data = await response.json();
+      console.log("here4");
       console.log('Tracks in playlist:', data);
       setTracks(data.items || []); // Assuming your backend returns tracks in data.items
     } catch (error) {
