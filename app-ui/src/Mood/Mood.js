@@ -57,10 +57,10 @@ function Mood() {
     setXNormValue(xNorm);
     setYNormValue(yNorm);
   
-    const topLeft = { r: 191, g: 255, b: 127 };
-    const topRight = { r: 255, g: 191, b: 127 };
+    const topLeft = { r: 173, g: 216, b: 230 };
+    const topRight = { r: 244, g: 191, b: 127 };
     const bottomLeft = { r: 127, g: 191, b: 191 };
-    const bottomRight = { r: 191, g: 127, b: 191 };
+    const bottomRight = { r: 255, g: 0, b: 255 };
   
     const rValue =
       topLeft.r * (1 - xNorm) * (1 - yNorm) +
