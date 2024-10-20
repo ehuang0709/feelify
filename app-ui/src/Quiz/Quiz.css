@@ -1,0 +1,80 @@
+.quiz-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align towards the top */
+    height: 100vh; /* Reduce height to create space at the bottom */
+    padding: 20px;
+    padding-top:150px;
+    background-color: #faf8f6; /* Light background */
+    border-radius: 16px; /* Rounded container */
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    text-align: center;
+}
+
+  .quiz-question h3 {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin-bottom: 20px;
+    font-family: 'Mortend-Bold', sans-serif; /* Custom bold font */
+    color: #333;
+    line-height: 1.4;
+  }
+  
+  .quiz-option-button {
+    display: flex;
+    align-items: center;
+    width: 100%; /* Full width for button */
+    background-color: #fff; /* White button */
+    border: 2px solid #e0e0e0; /* Light gray border */
+    border-radius: 30px; /* Rounded button */
+    padding: 10px 15px;
+    margin: 8px 0;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #333;
+    transition: all 0.3s ease;
+  }
+  
+  .quiz-option-button:hover {
+    background-color: #f5f5f5; /* Slight hover effect */
+    transform: scale(1.02); /* Small scale on hover */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.05); /* Subtle hover shadow */
+  }
+  
+  .quiz-option-button span {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #e0e0e0;
+    border-radius: 50%; /* Circular label */
+    text-align: center;
+    margin-right: 10px;
+    font-weight: bold;
+    line-height: 26px; /* Center text inside circle */
+    background-color: #fff;
+  }
+  
+  .quiz-finished h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .back-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  
+  .back-button:hover {
+    background-color: #45a049;
+  }
+  

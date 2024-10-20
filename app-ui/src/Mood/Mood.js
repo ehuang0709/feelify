@@ -116,11 +116,19 @@ function Mood() {
     return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
   };
 
+  const handleStartQuiz = () => {
+    navigate('/quiz');
+  };
+
   return (
     <div className="mood-container">
       <div className="text-container">
         <h1>HOW ARE YOU FEELING TODAY?</h1>
         <h3>DRAG THE PLAY ICON TO WHERE YOU RESONATE</h3>
+        <button onClick={handleStartQuiz} className="start-quiz-button">
+        Random
+        </button>
+
       </div>
 
       <div className="lower-section">

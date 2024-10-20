@@ -5,6 +5,7 @@ import PreAuthenticationScreen from '../PreAuthenticationScreen/PreAuthenticatio
 import Home from '../Home/Home.js';
 import { AnimatePresence } from 'framer-motion';
 import Playlist from '../Playlist/Playlist.js';
+import Quiz from '../Quiz/Quiz.js';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/mood" element={<Mood />} />
         <Route path="/pre-auth" element={<PreAuthenticationScreen />} />
         <Route path = "/playlist" element = {<Playlist />} />
+        <Route path = "/quiz" element = {<Quiz />} />
       </Routes>
       </AnimatePresence>
     </Router>
