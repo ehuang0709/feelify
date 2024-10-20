@@ -218,11 +218,18 @@ def callback():
             return redirect(f'https://feelify.netlify.app/?error=fetching_tracks_failed')
 
         tracks_data = tracks_response.json()
-        # URL encode the tracks data
-        encoded_tracks_data = urllib.parse.quote(json.dumps(tracks_data))
+        track_info = [{
+            'name': track['track']['name'],
+            'uri': track['track']['uri'],
+            'artists': [artist['name'] for artist in track['track']['artists']],
+            'album': track['track']['album']['name']
+        } for track in tracks_data['items']]
 
-        # Redirect to the frontend playlist page with playlist ID
-        return redirect(f'`https://feelify.netlify.app/playlist?playlist_id={playlist_id}&tracks_data={encoded_tracks_data}`')
+        # URL encode the track info data
+        encoded_tracks_data = urllib.parse.quote(json.dumps(track_info))
+
+        # Redirect to the frontend playlist page with playlist ID and track information
+        return redirect(f'https://feelify.netlify.app/playlist?playlist_id={playlist_id}&tracks_data={encoded_tracks_data}')
     
     else:
         return redirect(f'https://feelify.netlify.app/?error=access_denied')
