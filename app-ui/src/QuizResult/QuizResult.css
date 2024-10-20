@@ -36,6 +36,14 @@
     margin-top: 20px;
 }
 
+.inspiration-container {
+    max-width: 500px; /* Restricts the width of the text */
+    margin: 10px auto; /* Centers the container */
+    text-align: center;
+    line-height: 1.6; /* Improves readability */
+  }
+  
+
 .back-button {
     margin-top: 20px;
     background-color: #4caf50;
