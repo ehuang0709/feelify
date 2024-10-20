@@ -203,8 +203,16 @@ def user_top_items():
     return {"top_items": items_info} 
 
 # GENERATE SONG RECOMMENDATIONS
-@app.route('/recommendations', methods=['POST'])
+@app.route('/recommendations', methods=['POST', 'OPTIONS'])
 def generate_recommendations():
+    if request.method == 'OPTIONS':
+        # Handle the preflight request
+        response = make_response()
+        response.headers['Access-Control-Allow-Origin'] = 'https://feelify.netlify.app'
+        response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+        return response
+
     access_token = session.get('access_token')
     if not access_token:
         return redirect('/login')
