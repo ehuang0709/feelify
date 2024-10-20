@@ -19,47 +19,36 @@ const questions = [
 
 function Quiz() {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState([]); // Array to store chosen indexes
-  const [isFinished, setIsFinished] = useState(false);
+  const [answers, setAnswers] = useState([]); // Store chosen indexes
   const navigate = useNavigate();
 
   const handleOptionClick = (index) => {
-    // Store the chosen index in the answers array
-    setAnswers((prevAnswers) => [...prevAnswers, index]);
+    const newAnswers = [...answers, index]; // Store the latest answer
 
-    const nextQuestion = currentQuestion + 1;
-    if (nextQuestion < questions.length) {
-      setCurrentQuestion(nextQuestion);
+    // If it's the last question, navigate to QuizResult
+    if (currentQuestion + 1 === questions.length) {
+      navigate('/quiz-result', { state: { answers: newAnswers } });
     } else {
-      setIsFinished(true);
+      // Otherwise, move to the next question
+      setAnswers(newAnswers);
+      setCurrentQuestion(currentQuestion + 1);
     }
   };
-  console.log("quiz " + answers);
 
   return (
     <div className="quiz-container">
-      {!isFinished ? (
-        <div className="quiz-question">
-          <h3>{questions[currentQuestion].question}</h3>
-          {questions[currentQuestion].options.map((option, index) => (
-            <button
-              key={index}
-              onClick={() => handleOptionClick(index)} // Pass the chosen index
-              className="quiz-option-button"
-            >
-              {option}
-            </button>
-          ))}
-        </div>
-      ) : (
-        <div className="quiz-finished">
-          <h2>You’ve finished the quiz!</h2>
-          <p>Your answers: {JSON.stringify(answers)}</p> {/* Display chosen indexes */}
-          <button onClick={() => navigate('/')} className="back-button">
-            Go Back
+      <div className="quiz-question">
+        <h3>{questions[currentQuestion].question}</h3>
+        {questions[currentQuestion].options.map((option, index) => (
+          <button
+            key={index}
+            onClick={() => handleOptionClick(index)} // Pass the chosen index
+            className="quiz-option-button"
+          >
+            {option}
           </button>
-        </div>
-      )}
+        ))}
+      </div>
     </div>
   );
 }
