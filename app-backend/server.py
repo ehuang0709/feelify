@@ -15,7 +15,8 @@ CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
 CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
 # REDIRECT_URI = 'http://localhost:3000/callback'
 # REDIRECT_URI = 'https://the-repo.onrender.com/callback'
-REDIRECT_URI = 'https://feelify.netlify.app/playlist'
+#REDIRECT_URI = 'https://feelify.netlify.app/playlist'
+REDIRECT_URI = 'https://the-repo.onrender.com/callback'
 
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
@@ -47,40 +48,74 @@ def login():
     return redirect(auth_url)
 
 # SPOTIFY API CALLBACK
+# @app.route('/callback')
+# def callback():
+#     code = request.args.get('code')
+#     state = request.args.get('state')
+
+#     if not state:
+#         return redirect('/?' + urllib.parse.urlencode({'error': 'state_mismatch'}))
+
+#     auth_str = f"{CLIENT_ID}:{CLIENT_SECRET}"
+#     b64_auth_str = base64.b64encode(auth_str.encode()).decode()
+
+#     auth_options = {
+#         'url': 'https://accounts.spotify.com/api/token',
+#         'data': {
+#             'code': code,
+#             'redirect_uri': REDIRECT_URI,
+#             'grant_type': 'authorization_code'
+#         },
+#         'headers': {
+#             'Content-Type': 'application/x-www-form-urlencoded',
+#             'Authorization': f'Basic {b64_auth_str}'
+#         }
+#     }
+    
+#     response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
+#     token_data = response.json()
+#     access_token = token_data.get('access_token')
+
+#     if access_token:
+#         session['access_token'] = access_token
+#         # Redirect to the frontend playlist page
+#         return redirect('https://feelify.netlify.app/playlist')  
+#     else:
+#         return redirect('/?' + urllib.parse.urlencode({'error': 'access_denied'}))
 @app.route('/callback')
 def callback():
     code = request.args.get('code')
     state = request.args.get('state')
 
-    if not state:
-        return redirect('/?' + urllib.parse.urlencode({'error': 'state_mismatch'}))
-
+    # Exchange code for an access token
     auth_str = f"{CLIENT_ID}:{CLIENT_SECRET}"
     b64_auth_str = base64.b64encode(auth_str.encode()).decode()
 
-    auth_options = {
-        'url': 'https://accounts.spotify.com/api/token',
-        'data': {
+    response = requests.post(
+        'https://accounts.spotify.com/api/token',
+        data={
+            'grant_type': 'authorization_code',
             'code': code,
             'redirect_uri': REDIRECT_URI,
-            'grant_type': 'authorization_code'
+            'client_id': CLIENT_ID,
+            'client_secret': CLIENT_SECRET
         },
-        'headers': {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'Authorization': f'Basic {b64_auth_str}'
+        headers={
+            'Authorization': f'Basic {b64_auth_str}',
+            'Content-Type': 'application/x-www-form-urlencoded'
         }
-    }
-    
-    response = requests.post(auth_options['url'], data=auth_options['data'], headers=auth_options['headers'])
+    )
+
+    # Handle response and save token in the session
     token_data = response.json()
     access_token = token_data.get('access_token')
 
     if access_token:
         session['access_token'] = access_token
-        # Redirect to the frontend playlist page
-        return redirect('https://feelify.netlify.app/playlist')  
+        return redirect('https://feelify.netlify.app/playlist')  # Redirect to frontend
     else:
-        return redirect('/?' + urllib.parse.urlencode({'error': 'access_denied'}))
+        return redirect(f'https://feelify.netlify.app/?error=access_denied')
+
 
 # GET USER RECENTLY PLAYED
 @app.route('/recently-played')
