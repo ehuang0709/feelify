@@ -27,42 +27,33 @@ function Playlist() {
   };
 
   const handleOpenSpotifyClick = () => {
-    window.open('https://open.spotify.com/playlist/YOUR_PLAYLIST_ID', '_blank');
+    window.open(`https://open.spotify.com/playlist/${playlistId}`, '_blank');
   };
-
-  // Usage
-  const queryParams = getQueryParams();
-  const playlistId = queryParams.playlist_id;
-
-  if (playlistId) {
-  // Now you can use the playlistId in another function to fetch tracks
-    // fetchPlaylistTracks(playlistId);
-    console.log("playlist id: "+playlistId)
-  }
-
-  useEffect(() => {
-    if (playlistId) {
-      fetchPlaylistTracks(playlistId);
-    }
-  }, [playlistId]);
 
   const fetchPlaylistTracks = async (playlistId) => {
     try {
-      console.log("here1");
       const response = await fetch(`https://the-repo.onrender.com/playlists/${playlistId}`);
-      console.log("here2");
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
-      console.log("here3");
       const data = await response.json();
-      console.log("here4");
       console.log('Tracks in playlist:', data);
       setTracks(data.items || []); // Assuming your backend returns tracks in data.items
     } catch (error) {
       console.error('Error fetching playlist tracks:', error);
     }
   };
+
+  // Usage
+  const queryParams = getQueryParams();
+  const playlistId = queryParams.playlist_id;
+
+  useEffect(() => {
+    if (playlistId) {
+      console.log("playlist id: "+playlistId)
+      fetchPlaylistTracks(playlistId);
+    }
+  }, [playlistId]);
 
   useEffect(() => {
     const fetchRecommendations = async () => {
