@@ -13,13 +13,19 @@ function getQueryParams() {
 
   artistData.sort((a, b) => b.popularity - a.popularity);
 
+  const formattedArtistData = [];
+
   artistData.forEach(artist => {
-    console.log(`Artist Name: ${artist.artist_name}`);
-    console.log(`Artist URI: ${artist.artist_uri}`);
-    console.log(`Popularity: ${artist.popularity}`);
-    console.log(`Image URL: ${artist.image_url}`);
-    console.log(`Spotify URL: ${artist.spotify_url}`);
+    formattedArtistData.push({
+      name: artist.artist_name,
+      uri: artist.artist_uri,
+      popularity: artist.popularity,
+      imageUrl: artist.image_url,
+      spotifyUrl: artist.spotify_url
+    });
   });
+
+  console.log(formattedArtistData);
 
   
   for (const [key, value] of urlParams.entries()) {
