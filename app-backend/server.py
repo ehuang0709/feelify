@@ -9,7 +9,7 @@ import string
 
 app = Flask(__name__)
 app.secret_key = '51e718937f025e5ea3af64b1c45ad9aa943a622ef85fd6afd75d72b7225e7b06'
-CORS(app, supports_credentials=True, resources={r"/*": {"origins": "https://feelify.netlify.app", "methods": ["GET", "POST"]}})
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "https://feelify.netlify.app", "methods": ["GET", "POST", "OPTIONS"]}})
 
 CLIENT_ID = '7ae92784d41c4407b0a41a7e6f16c352'
 CLIENT_SECRET = '9ed3dac484904e33ace56746eafce27a'
@@ -20,6 +20,14 @@ REDIRECT_URI = 'https://feelify.netlify.app/playlist'
 def generate_random_string(length):
     letters = string.ascii_letters + string.digits
     return ''.join(random.choice(letters) for i in range(length))
+
+@app.after_request
+def add_cors_headers(response):
+    response.headers['Access-Control-Allow-Origin'] = 'https://feelify.netlify.app'
+    response.headers['Access-Control-Allow-Methods'] = 'POST, GET, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    return response
+
 
 # CHECK USER AUTHENTICATION
 @app.route('/check-auth')
